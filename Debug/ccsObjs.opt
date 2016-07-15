@@ -1,0 +1,1 @@
+"./main.obj" "./HARDWARE/OLED_I2C.obj" "./HARDWARE/myADC.obj" "./HARDWARE/myIIC.obj" "./HARDWARE/myKey.obj" "./HARDWARE/mySPI.obj" "./HARDWARE/myTimer.obj" "./LIB/HAL_PMM.obj" "./SOFTWARE/KeyBroad.obj" "./SOFTWARE/System.obj" "../lnk_msp430f5438a.cmd" -llibmath.a -llibc.a 

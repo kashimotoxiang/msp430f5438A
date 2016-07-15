@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?ccsproject version="1.0"?>
+<projectOptions>
+	<deviceVariant value="MSP430F5438A"/>
+	<deviceFamily value="MSP430"/>
+	<deviceEndianness value="little"/>
+	<codegenToolVersion value="15.12.1.LTS"/>
+	<isElfFormat value="true"/>
+	<linkerCommandFile value="lnk_msp430f5438a.cmd"/>
+	<rts value="libc.a"/>
+	<createSlaveProjects value=""/>
+	<templateProperties value="id=msp430x54xA_uscia0_spi_09.c_MSP430F5438A.projectspec.msp430x54xA_uscia0_spi_09.c,"/>
+	<origin value="C:\ti\msp\MSPWare_3_30_00_18\~TIRex\MSPWare\templates\scripts\projects\msp430x54xA_uscia0_spi_09.c_MSP430F5438A.projectspec"/>
+	<filesToOpen value=""/>
+	<connection value="common/targetdb/connections/TIMSP430-USB.xml"/>
+	<isTargetManual value="false"/>
+</projectOptions>
