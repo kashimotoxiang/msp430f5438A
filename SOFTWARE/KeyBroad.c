@@ -4,7 +4,12 @@
 //
 //*****************************************************************************
 #include "Keybroad.h"
-
+//*****************************************************************************
+//
+// define
+//
+//*****************************************************************************
+#define DELAYMS 1
 //*****************************************************************************
 //
 //variable
@@ -13,9 +18,10 @@
 /*输出序列-------------------------------------------------------*/
 static uint32_t WriteCol[COLNUM] = { OUTPIN1, OUTPIN2, OUTPIN3, OUTPIN4 };
 /*键盘数组-------------------------------------------------------*/
-static uint8_t KeyBroad_Array[ROWNUM][COLNUM] = { 1, 2, 3, 0, 4, 5, 6, 0, 7, 8, 9, 0,
-		0, 0, 0, 0 };
-
+static uint8_t KeyBroad_Array[ROWNUM][COLNUM] = { 1, 2, 3, 0, 4, 5, 6, 0, 7, 8,
+		9, 0, 0, 0, 0, 0 };
+/*键盘当前状态-------------------------------------------------------*/
+static struct KeyBroadStatus AKB;
 //*****************************************************************************
 //
 // declartion
@@ -30,6 +36,7 @@ static inline int Row_KeyBroadScan(uint8_t row);
 //*****************************************************************************
 void KeyBroadInit(void) {
 	Keybroad_DIR |= OUTPIN1 | OUTPIN2 | OUTPIN3 | OUTPIN4; // Set output direction
+	Keybroad_REN |= INPIN1 | INPIN2 | INPIN3 | INPIN4;
 }
 
 //*****************************************************************************
@@ -37,17 +44,18 @@ void KeyBroadInit(void) {
 // 键盘扫描程序
 //
 //*****************************************************************************
-uint32_t KeyBroadScan(void) {
-	/*变量定义-------------------------------------------------------*/
-	int result = e_ERROR;
+int KeyBroadScan(void) {
 	int i = 0;
 	for (i = 0; i < COLNUM; i++) {
 		Keybroad_OUT = WriteCol[i];
-		result = Row_KeyBroadScan(i);
-		if (result != e_ERROR)
-			return result;
+		AKB.Status = Row_KeyBroadScan(i);
+		if (AKB.Status == e_KeyScanExit) //有按键按下强制退出
+			return e_KeyScanFail;
 	}
-	return result; //怎么也得返回了
+	/*无按键按下-------------------------------------------------------*/
+	AKB.Result = AKB.Cache;
+	AKB.Cache = e_KeyScanFail;
+	return AKB.Result; //返回最后一个按下的 或者 e_KeyScanFail
 }
 //*****************************************************************************
 //
@@ -55,25 +63,36 @@ uint32_t KeyBroadScan(void) {
 //
 //*****************************************************************************
 static inline int Row_KeyBroadScan(uint8_t row) {
-	if (ReadRow0 != e_KeyTrue) {
-		while (ReadRow0 != e_KeyTrue)
-			;
-		return KeyBroad_Array[row][0];
+	if (ReadRow0) {
+		delayms(DELAYMS);
+		if (ReadRow0) {
+			AKB.Cache = KeyBroad_Array[row][0];
+			return e_KeyScanExit;
+		}
 	}
-	if (ReadRow1 != e_KeyTrue) {
-		while (ReadRow1 != e_KeyTrue)
-			;
-		return KeyBroad_Array[row][1];
+
+	if (ReadRow1) {
+		delayms(DELAYMS);
+		if (ReadRow1) {
+			AKB.Cache = KeyBroad_Array[row][1];
+			return e_KeyScanExit;
+		}
 	}
-	if (ReadRow2 != e_KeyTrue) {
-		while (ReadRow2 != e_KeyTrue)
-			;
-		return KeyBroad_Array[row][2];
+
+	if (ReadRow2) {
+		delayms(DELAYMS);
+		if (ReadRow2) {
+			AKB.Cache = KeyBroad_Array[row][2];
+			return e_KeyScanExit;
+		}
 	}
-	if (ReadRow3 != e_KeyTrue) {
-		while (ReadRow3 != e_KeyTrue)
-			;
-		return KeyBroad_Array[row][3];
+
+	if (ReadRow3) {
+		delayms(DELAYMS);
+		if (ReadRow3) {
+			AKB.Cache = KeyBroad_Array[row][3];
+			return e_KeyScanExit;
+		}
 	}
-	return e_ERROR;
+	return e_KeyScanConti;
 }

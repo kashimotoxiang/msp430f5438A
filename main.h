@@ -38,9 +38,10 @@ typedef u32_t u32;
 #include "myTimer.h"
 
 #include "OLED_I2C.h"
-#include "System.h"
 /*Software-------------------------------------------------------*/
+#include "System.h"
 #include "KeyBroad.h"
+#include "Usual.h"
 
 //*****************************************************************************
 //
@@ -60,7 +61,17 @@ typedef u32_t u32;
 /*DMA开关标识-------------------------------------------------------*/
 #define DMAOPEN   1
 #define DMACLOSE  0
-
+/*BIT-------------------------------------------------------*/
+#define BIT_0   (0x0001)
+#define BIT_1   (0x0002)
+#define BIT_2   (0x0004)
+#define BIT_3   (0x0008)
+#define BIT_4   (0x0010)
+#define BIT_5   (0x0020)
+#define BIT_6   (0x0040)
+#define BIT_7   (0x0080)
+#define BIT_8   (0x0100)
+#define BIT_9   (0x0200)
 //*****************************************************************************
 //
 // User Type

@@ -5,26 +5,32 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../SOFTWARE/KeyBroad.c \
-../SOFTWARE/System.c 
+../SOFTWARE/System.c \
+../SOFTWARE/Usual.c 
 
 OBJS += \
 ./SOFTWARE/KeyBroad.obj \
-./SOFTWARE/System.obj 
+./SOFTWARE/System.obj \
+./SOFTWARE/Usual.obj 
 
 C_DEPS += \
 ./SOFTWARE/KeyBroad.d \
-./SOFTWARE/System.d 
+./SOFTWARE/System.d \
+./SOFTWARE/Usual.d 
 
 C_DEPS__QUOTED += \
 "SOFTWARE\KeyBroad.d" \
-"SOFTWARE\System.d" 
+"SOFTWARE\System.d" \
+"SOFTWARE\Usual.d" 
 
 OBJS__QUOTED += \
 "SOFTWARE\KeyBroad.obj" \
-"SOFTWARE\System.obj" 
+"SOFTWARE\System.obj" \
+"SOFTWARE\Usual.obj" 
 
 C_SRCS__QUOTED += \
 "../SOFTWARE/KeyBroad.c" \
-"../SOFTWARE/System.c" 
+"../SOFTWARE/System.c" \
+"../SOFTWARE/Usual.c" 
 
 

@@ -11,6 +11,8 @@
 //*****************************************************************************
 SPIDataType g_SPIRxBuf[SPI_RXBUF_SIZE];
 ADCDataType g_ADCConvBuf[ADC_CONVBUF_SIZE];
+int g_KeyValue;
+unsigned char text[] = "ADC:";
 //*****************************************************************************
 //
 // main
@@ -18,8 +20,10 @@ ADCDataType g_ADCConvBuf[ADC_CONVBUF_SIZE];
 //*****************************************************************************
 int main(void) {
 	System_Initial_OSC();
-	while(1){
-
+	while (1) {
+		g_KeyValue = KeyBroadScan();
+		OLED_ShowStr(0, 0, text, COUNTOF(text));
+		//__bis_SR_register(LPM0_bits + GIE);     // Enter LPM0 w/ interrupts
 	}
 }
 //*****************************************************************************
