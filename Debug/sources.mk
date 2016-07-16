@@ -114,5 +114,6 @@ SUBDIRS := \
 . \
 HARDWARE \
 LIB \
+OLED \
 SOFTWARE \
 

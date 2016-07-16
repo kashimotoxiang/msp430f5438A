@@ -37,12 +37,12 @@ typedef u32_t u32;
 #include "mySPI.h"
 #include "myTimer.h"
 
-#include "OLED_I2C.h"
+#include "I2C_OLED.h"
 /*Software-------------------------------------------------------*/
 #include "System.h"
 #include "KeyBroad.h"
 #include "Usual.h"
-
+#include "delay.h"
 //*****************************************************************************
 //
 // define

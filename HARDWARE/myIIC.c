@@ -36,15 +36,7 @@
 //
 //*****************************************************************************
 void IIC_Init(void) {
-	P3SEL |= 0x06;                            // Assign I2C pins to USCI_B0
-	UCB0CTL1 |= UCSWRST;                      // Enable SW reset
-	UCB0CTL0 = UCMST + UCMODE_3 + UCSYNC;     // I2C Master, synchronous mode
-	UCB0CTL1 = UCSSEL_2 + UCSWRST;            // Use SMCLK, keep SW reset
-	UCB0BR0 = 12;                             // fSCL = SMCLK/12 = ~100kHz
-	UCB0BR1 = 0;
-	UCB0I2CSA = OLED_ADDRESS;                         // Slave Address is 048h
-	UCB0CTL1 &= ~UCSWRST;                    // Clear SW reset, resume operation
-	UCB0IE |= UCTXIE;                         // Enable TX interrupt
+
 }
 //*****************************************************************************
 //
@@ -52,15 +44,7 @@ void IIC_Init(void) {
 //
 //*****************************************************************************
 inline void IICSendByte(uint8_t Addr, uint8_t TXData) {
-	UCB0TXBUF = Addr;
-	while (UCB0CTL1 & UCTXSTP)
-		;             // Ensure stop condition got sent
-	UCB0CTL1 |= UCTR + UCTXSTT;             // I2C TX, start condition
-	/*-------------------------------------------------------*/
-	UCB0TXBUF = TXData;
-	while (UCB0CTL1 & UCTXSTP)
-		;             // Ensure stop condition got sent
-	UCB0CTL1 |= UCTR + UCTXSTT;             // I2C TX, start condition
+
 }
 //*****************************************************************************
 //

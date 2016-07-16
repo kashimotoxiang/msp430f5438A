@@ -16,9 +16,10 @@ SOFTWARE/System.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myADC.h
 SOFTWARE/System.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myIIC.h
 SOFTWARE/System.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myKey.h
 SOFTWARE/System.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h
-SOFTWARE/System.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/OLED_I2C.h
+SOFTWARE/System.obj: D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h
 SOFTWARE/System.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h
 SOFTWARE/System.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/Usual.h
+SOFTWARE/System.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/delay.h
 
 ../SOFTWARE/System.c: 
 ../SOFTWARE/System.h: 
@@ -36,6 +37,7 @@ D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myADC.h:
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myIIC.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myKey.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h: 
-D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/OLED_I2C.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/Usual.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/delay.h: 

@@ -11,13 +11,13 @@ GEN_CMDS__FLAG :=
 
 ORDERED_OBJS += \
 "./main.obj" \
-"./HARDWARE/OLED_I2C.obj" \
 "./HARDWARE/myADC.obj" \
 "./HARDWARE/myIIC.obj" \
 "./HARDWARE/myKey.obj" \
 "./HARDWARE/mySPI.obj" \
 "./HARDWARE/myTimer.obj" \
 "./LIB/HAL_PMM.obj" \
+"./OLED/I2C_OLED.obj" \
 "./SOFTWARE/KeyBroad.obj" \
 "./SOFTWARE/System.obj" \
 "./SOFTWARE/Usual.obj" \
@@ -36,10 +36,12 @@ RMDIR := RMDIR /S/Q
 -include subdir_vars.mk
 -include HARDWARE/subdir_vars.mk
 -include LIB/subdir_vars.mk
+-include OLED/subdir_vars.mk
 -include SOFTWARE/subdir_vars.mk
 -include subdir_rules.mk
 -include HARDWARE/subdir_rules.mk
 -include LIB/subdir_rules.mk
+-include OLED/subdir_rules.mk
 -include SOFTWARE/subdir_rules.mk
 -include objects.mk
 
@@ -169,8 +171,8 @@ msp430f5438A.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "HARDWARE\OLED_I2C.d" "HARDWARE\myADC.d" "HARDWARE\myIIC.d" "HARDWARE\myKey.d" "HARDWARE\mySPI.d" "HARDWARE\myTimer.d" "LIB\HAL_PMM.d" "SOFTWARE\KeyBroad.d" "SOFTWARE\System.d" "SOFTWARE\Usual.d" 
-	-$(RM) "main.obj" "HARDWARE\OLED_I2C.obj" "HARDWARE\myADC.obj" "HARDWARE\myIIC.obj" "HARDWARE\myKey.obj" "HARDWARE\mySPI.obj" "HARDWARE\myTimer.obj" "LIB\HAL_PMM.obj" "SOFTWARE\KeyBroad.obj" "SOFTWARE\System.obj" "SOFTWARE\Usual.obj" 
+	-$(RM) "main.d" "HARDWARE\myADC.d" "HARDWARE\myIIC.d" "HARDWARE\myKey.d" "HARDWARE\mySPI.d" "HARDWARE\myTimer.d" "LIB\HAL_PMM.d" "OLED\I2C_OLED.d" "SOFTWARE\KeyBroad.d" "SOFTWARE\System.d" "SOFTWARE\Usual.d" 
+	-$(RM) "main.obj" "HARDWARE\myADC.obj" "HARDWARE\myIIC.obj" "HARDWARE\myKey.obj" "HARDWARE\mySPI.obj" "HARDWARE\myTimer.obj" "LIB\HAL_PMM.obj" "OLED\I2C_OLED.obj" "SOFTWARE\KeyBroad.obj" "SOFTWARE\System.obj" "SOFTWARE\Usual.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

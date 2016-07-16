@@ -8,15 +8,14 @@ void System_Initial_OSC(void) {
 	P4DIR &= ~BIT0;  //care 上电后，一定要设为输入,不然，有可能会电源短路
 	WDTCTL = WDTPW + WDTHOLD;                 // Stop watchdog timer
 	Osccon_Initial(); //晶振初始化函数:定义相关晶振参数
-/*-------------------------------------------------------*/
-	KeyBroadInit();//初始化矩阵键盘
-	OLED_Init();//初始化OLED显示模块
-	ADC_Init(DMAOPEN);//DMA方式初始化ADC
-	SPI0MasterInit(DMAOPEN);//DMA方式初始化SPI
+	/*-------------------------------------------------------*/
+	KeyBroadInit(); //初始化矩阵键盘
+	I2C_OLED_Init(); //初始化OLED显示模块
+	ADC_Init(DMAOPEN); //DMA方式初始化ADC
+	SPI0MasterInit(DMAOPEN); //DMA方式初始化SPI
 	/*-------------------------------------------------------*/
 	//	Init_Timer0_A(); //定时器A0初始化设置(用于系统每1ms自动中断一次)
 	//  Init_Timer0_B();
-
 }
 //*****************************************************************************
 //
