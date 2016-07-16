@@ -6,7 +6,7 @@ char TemptString[10] = {0};//数字字符串转换数组
 //---------------------------------------------------------------------//
 void Bubble_Sort (uint8_t volatile* num, int n)
 {
-	static int32_t i, j;
+	static uint32_t i, j;
 	for (i = 0; i < n; i++) {
 		for (j = 0; i + j < n - 1; j++) {
 			if (num[j] > num[j + 1]) {

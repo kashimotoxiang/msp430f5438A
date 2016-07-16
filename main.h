@@ -16,6 +16,10 @@ typedef unsigned char u8_t;
 typedef unsigned short int u16_t;
 typedef unsigned short int u32_t;
 
+typedef unsigned char uint8_t;
+typedef unsigned short int uint16_t;
+typedef unsigned short int uint32_t;
+
 typedef u8_t u8;
 typedef u16_t u16;
 typedef u32_t u32;
@@ -28,7 +32,8 @@ typedef u32_t u32;
 
 /*System-------------------------------------------------------*/
 #include <msp430.h>
-#include "HAL_PMM.h"
+#include "stdio.h" //用sprintf要用的头文件
+#include "math.h"
 /*Hardware-------------------------------------------------------*/
 #include "mySPI.h"
 #include "myADC.h"
@@ -42,7 +47,6 @@ typedef u32_t u32;
 #include "System.h"
 #include "KeyBroad.h"
 #include "Usual.h"
-#include "delay.h"
 //*****************************************************************************
 //
 // define
@@ -72,6 +76,8 @@ typedef u32_t u32;
 #define BIT_7   (0x0080)
 #define BIT_8   (0x0100)
 #define BIT_9   (0x0200)
+/*-------------------------------------------------------*/
+#define SLEEPLIEVEL LPM4_bits
 //*****************************************************************************
 //
 // User Type

@@ -13,4 +13,4 @@
 //
 //*****************************************************************************
 void SPI0MasterInit(u8 DMAInitFlag) ;
-void SPI0SlaveInit(u8 DMAInitFlag) ;
+void SPI0SlaveDMAInit(void) ;

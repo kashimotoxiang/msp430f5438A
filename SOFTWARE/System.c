@@ -1,18 +1,21 @@
 #include "System.h"
+
+//*****************************************************************************
+//
+// declartion
+//
+//*****************************************************************************
+static void SetVcoreUp(unsigned int level);
+
 //*****************************************************************************
 //
 // 系统初始化
 //
 //*****************************************************************************
-void System_Initial_OSC(void) {
+void System_Init(void) {
 	P4DIR &= ~BIT0;  //care 上电后，一定要设为输入,不然，有可能会电源短路
 	WDTCTL = WDTPW + WDTHOLD;                 // Stop watchdog timer
 	Osccon_Initial(); //晶振初始化函数:定义相关晶振参数
-	/*-------------------------------------------------------*/
-	KeyBroadInit(); //初始化矩阵键盘
-	I2C_OLED_Init(); //初始化OLED显示模块
-	ADC_Init(DMAOPEN); //DMA方式初始化ADC
-	SPI0MasterInit(DMAOPEN); //DMA方式初始化SPI
 	/*-------------------------------------------------------*/
 	//	Init_Timer0_A(); //定时器A0初始化设置(用于系统每1ms自动中断一次)
 	//  Init_Timer0_B();
@@ -23,53 +26,59 @@ void System_Initial_OSC(void) {
 //
 //*****************************************************************************
 void Osccon_Initial(void) {
-	SetVCore(PMMCOREV_3);// Set Vcore to accomodate for max. allowed system speed
+	SetVcoreUp(PMMCOREV_1);
+	SetVcoreUp(PMMCOREV_2);                     // Set VCore to 1.8MHz for 20MHz
 
-	UCSCTL3 |= SELREF_2;					  // Set DCO FLL reference = REFO
+	P11DIR = BIT1 + BIT2;                       // P11.1-2 to output direction
+	P11SEL |= BIT1 + BIT2;                      // P11.1-2 to output SMCLK,MCLK
+	P5SEL |= 0x0C;                            // Port select XT2
 
-	__bis_SR_register(SCG0);				  // Disable the FLL control loop
-	UCSCTL0 = 0x0000;						  // Set lowest possible DCOx, MODx
-	UCSCTL1 = DCORSEL_5;					 // Select DCO range 24MHz operation
-	UCSCTL2 = FLLD_1 + 374; 				  // Set DCO Multiplier for 12MHz
-	__bic_SR_register(SCG0);				  // Enable the FLL control loop
-	P5SEL |= BIT2 + BIT3;					   // Port select XT2
+	UCSCTL6 &= ~XT2OFF;                       // Enable XT2
+	UCSCTL3 |= SELREF_2;                      // FLLref = REFO
+											  // Since LFXT1 is not used,
+											  // sourcing FLL with LFXT1 can cause
+											  // XT1OFFG flag to set
+	UCSCTL4 |= SELA_2;                        // ACLK=REFO,SMCLK=DCO,MCLK=DCO
 
-	UCSCTL6 &= ~XT2OFF;					   // Enable XT2
+	// Loop until XT1,XT2 & DCO stabilizes
+	do {
+		UCSCTL7 &= ~(XT2OFFG + XT1LFOFFG + XT1HFOFFG + DCOFFG);
+		// Clear XT2,XT1,DCO fault flags
+		SFRIFG1 &= ~OFIFG;                      // Clear fault flags
+	} while (SFRIFG1 & OFIFG);                   // Test oscillator fault flag
 
-	UCSCTL6 &= ~(XT1OFF);					   // XT1 On
-	UCSCTL6 |= XCAP_3; 					   // Internal load cap
-
-	UCSCTL4 &= ~SELS_5;
-	UCSCTL4 |= SELS_4;	 //SMCLK选择DCOCLKDIV (倍频后的频率)
-
-	UCSCTL7 &= ~(XT2OFFG + XT1LFOFFG + XT1HFOFFG + DCOFFG);
-	// Clear XT2,XT1,DCO fault flags
-	SFRIFG1 &= ~OFIFG;					  // Clear fault flags
-
-	delayms(800);
-	UCSCTL6 &= ~XT2DRIVE0;// Decrease XT2 Drive according to  expected frequency
+	UCSCTL6 &= ~XT2DRIVE0;                    // Decrease XT2 Drive according to
+											  // expected frequency
+	UCSCTL4 |= SELS_5 + SELM_5;               // SMCLK=MCLK=XT2
 
 }
+
 //*****************************************************************************
 //
-// delayms
+// SetVcoreUp
 //
 //*****************************************************************************
-void delayms(int count)  // /* X1ms */
-{
-	int i, j;
-	for (i = 0; i < count; i++)
-		for (j = 0; j < 2000; j++)
-			;
-}
-//*****************************************************************************
-//
-// delayns
-//
-//*****************************************************************************
-void delayns(int count)  // /* X1ms */
-{
-	int i;
-	for (i = 0; i < count; i++)
+static void SetVcoreUp(unsigned int level) {
+	// Open PMM registers for write
+	PMMCTL0_H = PMMPW_H;
+	// Set SVS/SVM high side new level
+	SVSMHCTL = SVSHE + SVSHRVL0 * level + SVMHE + SVSMHRRL0 * level;
+	// Set SVM low side to new level
+	SVSMLCTL = SVSLE + SVMLE + SVSMLRRL0 * level;
+	// Wait till SVM is settled
+	while ((PMMIFG & SVSMLDLYIFG) == 0)
 		;
+	// Clear already set flags
+	PMMIFG &= ~(SVMLVLRIFG + SVMLIFG);
+	// Set VCore to new level
+	PMMCTL0_L = PMMCOREV0 * level;
+	// Wait till new level reached
+	if ((PMMIFG & SVMLIFG))
+		while ((PMMIFG & SVMLVLRIFG) == 0)
+			;
+	// Set SVS/SVM low side to new level
+	SVSMLCTL = SVSLE + SVSLRVL0 * level + SVMLE + SVSMLRRL0 * level;
+	// Lock PMM registers for write access
+	PMMCTL0_H = 0x00;
 }
+

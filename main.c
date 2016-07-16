@@ -20,21 +20,25 @@ unsigned char text[] = "ADC:";
 //
 //*****************************************************************************
 int main(void) {
-	System_Initial_OSC();
-	while (1) {
-		g_KeyValue = KeyBroadScan();
-		//OLED_ShowStr(0, 0, text, FONTSIZE68);
-		//__bis_SR_register(LPM0_bits + GIE);     // Enter LPM0 w/ interrupts
+	double ADCSingleConv = 0;
+	char ADCSingleConvStr[10] = { 0 };
+	P1DIR |= 0x01;                            // P1.0 output
+	System_Init();
+	/*-------------------------------------------------------*/
+	KeyBroadInit(); //初始化矩阵键盘
+	I2C_OLED_Init(); //初始化OLED显示模块
+//	ADC_Init(DMACLOSE); //DMA方式初始化ADC
 
-		OLED_All(0);
-		delay_ms(1000);
-		OLED_P16x16Ch(0, 0, 1);
-		OLED_P16x16Ch(16, 2, 2);
-		OLED_P16x16Ch(32, 4, 3);
-		OLED_P16x16Ch(48, 6, 4);
-		delay_ms(2000);
-		Draw_BMP(lan);
-		delay_ms(2000);
+	Init_Timer0_A();
+	SPI0SlaveDMAInit(); //DMA方式初始化SPI
+	/*-------------------------------------------------------*/
+	while (1) {
+		//	ADCSingleConv = ADCs_Get();
+		OLED_P8x16Str(0, 0, text);
+		Num_Show(ADCSingleConv, "%d", 5, 0);
+		TA1CCTL0 = CCIE; //开始计时
+		__bis_SR_register(SLEEPLIEVEL + GIE);   // Enter LPM0, enable interrupts
+		__no_operation();                       // Remain in LPM0 until all data
 	}
 }
 //*****************************************************************************

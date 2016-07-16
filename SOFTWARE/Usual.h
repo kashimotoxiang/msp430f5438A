@@ -16,12 +16,11 @@
 void Bubble_Sort(uint8_t volatile* num, int n);
 //---------------------------------------------------------------------//
 extern char TemptString[10];
-extern void ESP_LCD_ShowString(u16 x_cur, u16 y_cur, char* p);
 
 /* ˝◊÷œ‘ æ-------------------------------------------------------*/
 inline void Num_Show(long int data, char* com, u16 x, u16 y) {
 	sprintf(TemptString, com, data);
-	ESP_LCD_ShowString(x, y, TemptString);
+	OLED_P8x16Str(x*8, y*16, TemptString);
 }
 
 /*≤Â»Î≈≈–Ú---------------------------------------------------------*/

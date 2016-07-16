@@ -7,6 +7,9 @@
 #include"I2C_OLED.h"
 #include"codetab.h"
 #include"zimo.h"
+
+#define delay_us(x)
+
 u8 OLED_GRAM[128][8];	 //显存
 void I2C_start_OLED()
 {
@@ -189,7 +192,7 @@ void I2C_OLED_Init(void) //OLED初始化
 	OLED_WRITE_COM(0x12); //[5:4]配置
 
 	OLED_WRITE_COM(0x81); //对比度设置
-	OLED_WRITE_COM(0xEF); //1~255;默认0X7F (亮度设置,越大越亮)
+	OLED_WRITE_COM(0x10); //1~255;默认0X7F (亮度设置,越大越亮)
 	OLED_WRITE_COM(0xD9); //设置预充电周期
 	OLED_WRITE_COM(0xf1); //[3:0],PHASE 1;[7:4],PHASE 2;
 	OLED_WRITE_COM(0xDB); //设置VCOMH 电压倍率

@@ -9,6 +9,8 @@
 // note：
 // ADC12一个
 //
+//  ADC12CTL0 |= ADC12SC;   //启动转换
+//  temp = ADC12MEM0;		//获取转换值
 //*****************************************************************************
 
 //*****************************************************************************
@@ -18,6 +20,44 @@
 //*****************************************************************************
 static uint32_t ADC12SHT0_x = ADC12SHT0_15; //采样保持时间
 static uint8_t DMASwitch = 0; //因为只有一个ADC，设置一个DMA开关
+//*****************************************************************************
+//
+// 简单ADC初始化
+//
+//*****************************************************************************
+void ADCs_Init(void) {
+	Close_ADC12_A();
+	ADC12CTL0 = 0;
+	ADC12CTL1 = 0;
+	ADC12MCTL0 = 0;
+	/*-------------------------------------------------------*/
+	REFCTL0 &= ~REFMSTR;
+	/*-------------------------------------------------------*/
+	ADC_SEL |= ADC_PIN; //配置引脚为"外围模块功能"引脚
+	ADC_DIR &= (~ADC_PIN);   //配置引脚为"输入"
+	/*-------------------------------------------------------*/
+	ADC12CTL0 = ADC12SHT0_15 + ADC12ON;         // Sampling time, ADC12 on
+	ADC12CTL1 = ADC12SHP;                     // Use sampling timer
+	ADC12CTL2 = ADC12RES_2;  //选择ADC 为12位
+	//	  ADC12IE = 0x01;                           // Enable interrupt
+	ADC12CTL0 |= ADC12ENC;
+	/*-------------------------------------------------------*/
+	//  ADC12CTL0 |= ADC12SC;                   // Start sampling/conversion
+}
+//*****************************************************************************
+//
+// 简单ADC_Get
+//
+//*****************************************************************************
+double ADCs_Get(void) {
+	double temp = 0;
+
+	ADC12CTL0 |= ADC12SC;                   // Start conversion
+	while (!(ADC12IFG & BIT0))
+		;
+	temp = ADC12MEM0;
+	return (temp / ACCUADC) * MAXVOLT*1000;
+}
 //*****************************************************************************
 //
 // ADC_DMA初始化
@@ -36,16 +76,17 @@ void ADC_Init(u8 DMAInitFlag) {
 	/*-------------------------------------------------------*/
 	ADC12CTL0 = ADC12SHT0_x + ADC12REFON + ADC12MSC + ADC12REF2_5V; // Turn on ADC12, Sampling time  On Reference Generator and set to 2.5V
 	ADC12CTL1 = ADC12CSTARTADD_0 + ADC12SHP + ADC12SSEL_3 + ADC12CONSEQ_2; // Use sampling timer
-	ADC12CTL2 = ADC12RES_0;  //选择ADC 为12位
+	ADC12CTL2 = ADC12RES_2;  //选择ADC 为12位
 	ADC12MCTL0 = ADC12INCH_0 + ADC12SREF_0;	 // Vr+=Vref+ and Vr-=AVss
 	/*-------------------------------------------------------*/
 	if (DMAInitFlag) {
+		ADC12CTL2 = ADC12RES_0;  //选择ADC 为8位//DMA下 8位合适
 		DMASwitch = 1;
 		DMACTL0 &= ~DMA0TSEL_31;                   //DMA0 is triggered by DMAREQ
 		DMACTL0 = DMA0TSEL_24;                     //DMA0 is triggered by DMAREQ
 		DMA0SA = (int) &ADC12MEM0;                           // Source 字地址
 		DMA0DA = (int) g_ADCConvBuf;                                // 目的字地址
-		DMA0SZ = sizeof(g_ADCConvBuf);                                      //传输大小
+		DMA0SZ = sizeof(g_ADCConvBuf);                                    //传输大小
 		DMA0CTL = DMADT_0 + DMADSTINCR_3 + DMASBDB + DMAEN; // 重复字节传输
 	}
 	/*-------------------------------------------------------*/

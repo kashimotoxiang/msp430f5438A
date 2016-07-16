@@ -21,15 +21,17 @@
 
 #define	mReset_Soft    (PMMCTL0 |= PMMSWPOR) //"软件复位" (MSP430单片机)
 
+#define	delayms(x) __delay_cycles(24000*x);
+#define	delayus(x) __delay_cycles(24*x);
+#define	delay42ns(x) __delay_cycles(x);
 //*****************************************************************************
 //
 // declartion
 //
 //*****************************************************************************
 extern void System_GetLoopClockTick(void); //每次"死等"延时10ms后，系统"循环"执行一次程序
-void System_Initial_OSC(void);          //   系统初使化 :单片机内部资源+外部基本资源的初使化 
+void System_Init(void);          //   系统初使化 :单片机内部资源+外部基本资源的初使化 
 void Osccon_Initial(void);  //晶振初始化函数:定义相关晶振参数
-void delayms(int count);
-void delayns(int count);
+
 
 
