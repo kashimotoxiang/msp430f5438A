@@ -42,11 +42,14 @@ typedef u32_t u32;
 #include "mySPI.h"
 #include "myTimer.h"
 
-#include "I2C_OLED.h"
 /*Software-------------------------------------------------------*/
 #include "System.h"
 #include "KeyBroad.h"
 #include "Usual.h"
+
+/*User Hardware-------------------------------------------------------*/
+#include "I2C_OLED.h"
+#include "I2C_IncSreen.h"
 //*****************************************************************************
 //
 // define
@@ -91,5 +94,6 @@ typedef uint8_t ADCDataType;
 //extern
 //
 //*****************************************************************************
+extern long SystemTimeCounter;
 extern SPIDataType g_SPIRxBuf[SPI_RXBUF_SIZE];
 extern ADCDataType g_ADCConvBuf[ADC_CONVBUF_SIZE];

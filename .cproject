@@ -52,7 +52,7 @@
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/HARDWARE&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/SOFTWARE&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/OLED&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/LIB&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}/INCSCREEN&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${PROJECT_LOC}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${CG_TOOL_ROOT}/include&quot;"/>
 								</option>

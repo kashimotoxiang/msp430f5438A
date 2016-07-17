@@ -6,7 +6,6 @@
  */
 #include"I2C_OLED.h"
 #include"codetab.h"
-#include"zimo.h"
 
 #define delay_us(x)
 

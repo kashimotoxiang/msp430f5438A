@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v15.12.1                    
 ******************************************************************************
->> Linked Sat Jul 16 23:18:35 2016
+>> Linked Sun Jul 17 17:22:55 2016
 
 OUTPUT FILE NAME:   <msp430f5438A.out>
-ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 00005c48
+ENTRY POINT SYMBOL: "_c_int00_noargs_noexit"  address: 00005c28
 
 
 MEMORY CONFIGURATION
@@ -18,8 +18,8 @@ MEMORY CONFIGURATION
   INFOC                 00001880   00000080  00000000  00000080  RWIX
   INFOB                 00001900   00000080  00000000  00000080  RWIX
   INFOA                 00001980   00000080  00000000  00000080  RWIX
-  RAM                   00001c00   00004000  000000b3  00003f4d  RWIX
-  FLASH                 00005c00   0000a380  000006c0  00009cc0  RWIX
+  RAM                   00001c00   00004000  000000c5  00003f3b  RWIX
+  FLASH                 00005c00   0000a380  000006d6  00009caa  RWIX
   INT00                 0000ff80   00000002  00000000  00000002  RWIX
   INT01                 0000ff82   00000002  00000000  00000002  RWIX
   INT02                 0000ff84   00000002  00000000  00000002  RWIX
@@ -84,7 +84,7 @@ MEMORY CONFIGURATION
   INT61                 0000fffa   00000002  00000002  00000000  RWIX
   INT62                 0000fffc   00000002  00000002  00000000  RWIX
   RESET                 0000fffe   00000002  00000002  00000000  RWIX
-  FLASH2                00010000   00035c00  00000b96  0003506a  RWIX
+  FLASH2                00010000   00035c00  00001db4  00033e4c  RWIX
 
 
 SECTION ALLOCATION MAP
@@ -92,39 +92,49 @@ SECTION ALLOCATION MAP
  output                                  attributes/
 section   page    origin      length       input sections
 --------  ----  ----------  ----------   ----------------
-.data      0    00001c00    00000013     UNINITIALIZED
+.data      0    00001c00    0000001b     UNINITIALIZED
                   00001c00    0000000a     Usual.obj (.data:TemptString)
                   00001c0a    00000005     main.obj (.data:text)
                   00001c0f    00000001     --HOLE--
-                  00001c10    00000003     mySPI.obj (.data:TxString)
+                  00001c10    00000004     main.obj (.data)
+                  00001c14    00000003     mySPI.obj (.data:TxString)
+                  00001c17    00000001     --HOLE--
+                  00001c18    00000003     myADC.obj (.data)
+
+.bss       0    00001c1c    0000000a     UNINITIALIZED
+                  00001c1c    0000000a     (.common:g_ADCConvBuf)
 
 .stack     0    00005b60    000000a0     UNINITIALIZED
                   00005b60    00000004     rts430x_lc_rd_eabi.lib : boot.obj (.stack)
                   00005b64    0000009c     --HOLE--
 
 .text:_isr 
-*          0    00005c00    00000096     
+*          0    00005c00    00000076     
                   00005c00    00000028     myIIC.obj (.text:_isr:USCI_B0_ISR)
-                  00005c28    00000020     main.obj (.text:_isr:USCI_A0_ISR)
-                  00005c48    0000001a     rts430x_lc_rd_eabi.lib : boot_special.obj (.text:_isr:_c_int00_noargs_noexit)
-                  00005c62    00000018     myTimer.obj (.text:_isr:TIMER1_A0_ISR)
-                  00005c7a    00000008     mySPI.obj (.text:_isr:WDT_ISR)
-                  00005c82    00000008     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
-                  00005c8a    00000006     myKey.obj (.text:_isr:Port_1)
-                  00005c90    00000006     myKey.obj (.text:_isr:Port_2)
+                  00005c28    0000001a     rts430x_lc_rd_eabi.lib : boot_special.obj (.text:_isr:_c_int00_noargs_noexit)
+                  00005c42    00000018     myTimer.obj (.text:_isr:TIMER1_A0_ISR)
+                  00005c5a    00000008     mySPI.obj (.text:_isr:WDT_ISR)
+                  00005c62    00000008     rts430x_lc_rd_eabi.lib : isr_trap.obj (.text:_isr:__TI_ISR_TRAP)
+                  00005c6a    00000006     myKey.obj (.text:_isr:Port_1)
+                  00005c70    00000006     myKey.obj (.text:_isr:Port_2)
 
-.cinit     0    0000629e    00000022     
-                  0000629e    00000012     (.cinit..data.load) [load image, compression = rle]
-                  000062b0    00000008     (__TI_handler_table)
-                  000062b8    00000008     (__TI_cinit_table)
+.cinit     0    0000629c    0000003a     
+                  0000629c    00000017     (.cinit..data.load) [load image, compression = rle]
+                  000062b3    00000001     --HOLE-- [fill = 0]
+                  000062b4    00000009     (.cinit..bss.load) [load image, compression = rle]
+                  000062bd    00000001     --HOLE-- [fill = 0]
+                  000062be    00000008     (__TI_handler_table)
+                  000062c6    00000010     (__TI_cinit_table)
 
 .init_array 
 *          0    00005c00    00000000     UNINITIALIZED
 
-.const     0    00005c96    00000608     
-                  00005c96    000005f0     I2C_OLED.obj (.const:.string:F8X16)
-                  00006286    00000014     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.const:.string)
-                  0000629a    00000004     main.obj (.const:.string)
+.const     0    00005c76    00000626     
+                  00005c76    000005f0     codetab.obj (.const:.string:F8X16)
+                  00006266    0000001d     I2C_IncSreen.obj (.const:.string:init_data)
+                  00006283    00000001     --HOLE-- [fill = 0]
+                  00006284    00000014     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.const:.string)
+                  00006298    00000004     main.obj (.const:.string)
 
 RTC        0    0000ffd2    00000002     
                   0000ffd2    00000002     rts430x_lc_rd_eabi.lib : int41.obj (.int41)
@@ -179,7 +189,7 @@ USCI_B0    0    0000fff0    00000002
                   0000fff0    00000002     myIIC.obj (.int56)
 
 USCI_A0    0    0000fff2    00000002     
-                  0000fff2    00000002     main.obj (.int57)
+                  0000fff2    00000002     rts430x_lc_rd_eabi.lib : int57.obj (.int57)
 
 WDT        0    0000fff4    00000002     
                   0000fff4    00000002     mySPI.obj (.int58)
@@ -201,89 +211,125 @@ SYSNMI     0    0000fffc    00000002
 .reset     0    0000fffe    00000002     
                   0000fffe    00000002     rts430x_lc_rd_eabi.lib : boot.obj (.reset)
 
-.text      0    00010000    00000b96     
-                  00010000    00000132     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.text:_setfield)
-                  00010132    000000d8                            : _printfi_min.obj (.text:_pproc_diouxp)
-                  0001020a    000000d2                            : _printfi_min.obj (.text:__TI_printfi_minimal)
-                  000102dc    000000cc     I2C_OLED.obj (.text:OLED_P8x16Str)
-                  000103a8    000000ca     I2C_OLED.obj (.text:I2C_OLED_Init)
-                  00010472    00000082     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
-                  000104f4    00000080     main.obj (.text:main)
-                  00010574    00000068     rts430x_lc_rd_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  000105dc    00000066                            : fixdli.obj (.text:__mspabi_fixdli)
-                  00010642    00000066                            : cpy_tbl.obj (.text:copy_in)
-                  000106a8    0000005c     mySPI.obj (.text:SPI0SlaveDMAInit)
-                  00010704    0000005a     I2C_OLED.obj (.text:OLED_All)
-                  0001075e    00000058     System.obj (.text:SetVcoreUp)
-                  000107b6    00000054     I2C_OLED.obj (.text:I2C_SendByte_OLED)
-                  0001080a    0000004e     main.obj (.text:Num_Show)
-                  00010858    0000004e     System.obj (.text:Osccon_Initial)
-                  000108a6    00000048     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.text:_pproc_str)
-                  000108ee    00000044                            : sprintf.obj (.text:sprintf)
-                  00010932    0000003e                            : lsl32.obj (.text:l_lsl_const)
-                  00010970    00000036     I2C_OLED.obj (.text:OLED_Set_Pos)
-                  000109a6    00000032     I2C_OLED.obj (.text:I2C_RecvACK_OLED)
-                  000109d8    0000002c     I2C_OLED.obj (.text:Single_Write_OLED)
-                  00010a04    00000026     I2C_OLED.obj (.text:I2C_Stop_OLED)
-                  00010a2a    00000026     I2C_OLED.obj (.text:I2C_start_OLED)
-                  00010a50    00000020     rts430x_lc_rd_eabi.lib : sprintf.obj (.text:_outs)
-                  00010a70    0000001e                            : memccpy.obj (.text:memccpy)
-                  00010a8e    00000018                            : mult16_f5hw.obj (.text)
-                  00010aa6    00000016                            : memset.obj (.text:memset)
-                  00010abc    00000016                            : div16u.obj (.text)
-                  00010ad2    00000014     I2C_OLED.obj (.text:OLED_WRITE_dat)
-                  00010ae6    00000014     rts430x_lc_rd_eabi.lib : sprintf.obj (.text:_outc)
-                  00010afa    00000014                            : memcpy.obj (.text:memcpy)
-                  00010b0e    00000012     I2C_OLED.obj (.text:OLED_WRITE_COM)
-                  00010b20    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  00010b32    00000010     System.obj (.text:System_Init)
-                  00010b42    00000010     rts430x_lc_rd_eabi.lib : lsr32.obj (.text:l_lsr)
-                  00010b52    0000000e     myTimer.obj (.text:Init_Timer0_A)
-                  00010b60    0000000e     KeyBroad.obj (.text:KeyBroadInit)
-                  00010b6e    0000000e     rts430x_lc_rd_eabi.lib : strlen.obj (.text:strlen)
-                  00010b7c    00000008     I2C_OLED.obj (.text:OLED_CLC)
-                  00010b84    00000006     rts430x_lc_rd_eabi.lib : exit.obj (.text:abort)
-                  00010b8a    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  00010b90    00000004                            : pre_init.obj (.text:_system_pre_init)
-                  00010b94    00000002                            : startup.obj (.text:_system_post_cinit)
+.text      0    00010000    00001db4     
+                  00010000    00000486     rts430x_lc_rd_eabi.lib : frcdivd.obj (.text:__TI_frcdivd)
+                  00010486    000002e4                            : frcmpyd.obj (.text:__TI_frcmpyd)
+                  0001076a    00000282                            : mpyd.obj (.text:__mspabi_mpyd)
+                  000109ec    00000222                            : divd.obj (.text:__mspabi_divd)
+                  00010c0e    00000152     I2C_IncSreen.obj (.text:IncS_Init)
+                  00010d60    00000132     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.text:_setfield)
+                  00010e92    000000d8                            : _printfi_min.obj (.text:_pproc_diouxp)
+                  00010f6a    000000d4     I2C_IncSreen.obj (.text:IncS_P8x16Str)
+                  0001103e    000000d2     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.text:__TI_printfi_minimal)
+                  00011110    000000cc     I2C_OLED.obj (.text:OLED_P8x16Str)
+                  000111dc    000000ca     I2C_OLED.obj (.text:I2C_OLED_Init)
+                  000112a6    000000ae     main.obj (.text:main)
+                  00011354    00000090     myADC.obj (.text:ADC_Init)
+                  000113e4    00000090     myADC.obj (.text:ADCs_Get)
+                  00011474    00000082     rts430x_lc_rd_eabi.lib : autoinit_wdt.obj (.text:_auto_init_hold_wdt)
+                  000114f6    00000080                            : fltuld.obj (.text:__mspabi_fltuld)
+                  00011576    00000068                            : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  000115de    00000066                            : fixdli.obj (.text:__mspabi_fixdli)
+                  00011644    00000066                            : cpy_tbl.obj (.text:copy_in)
+                  000116aa    0000005c     mySPI.obj (.text:SPI0SlaveDMAInit)
+                  00011706    0000005a     I2C_OLED.obj (.text:OLED_All)
+                  00011760    00000058     I2C_IncSreen.obj (.text:IncS_Write_Com)
+                  000117b8    00000058     I2C_IncSreen.obj (.text:IncS_Write_Data)
+                  00011810    00000058     System.obj (.text:SetVcoreUp)
+                  00011868    00000054     I2C_OLED.obj (.text:I2C_SendByte_OLED)
+                  000118bc    0000004e     System.obj (.text:Osccon_Initial)
+                  0001190a    0000004a     main.obj (.text:Num_Show)
+                  00011954    00000048     rts430x_lc_rd_eabi.lib : _printfi_min.obj (.text:_pproc_str)
+                  0001199c    00000044                            : sprintf.obj (.text:sprintf)
+                  000119e0    0000003e                            : asr32.obj (.text:l_asr_const)
+                  00011a1e    0000003e                            : lsl32.obj (.text:l_lsl_const)
+                  00011a5c    0000003e                            : lsr32.obj (.text:l_lsr_const)
+                  00011a9a    00000036     I2C_OLED.obj (.text:OLED_Set_Pos)
+                  00011ad0    00000034     I2C_IncSreen.obj (.text:IncS_Set_Pos)
+                  00011b04    00000032     I2C_OLED.obj (.text:I2C_RecvACK_OLED)
+                  00011b36    00000032     I2C_IncSreen.obj (.text:WRITE_LUT)
+                  00011b68    0000002c     I2C_OLED.obj (.text:Single_Write_OLED)
+                  00011b94    0000002a     I2C_IncSreen.obj (.text:READBUSY)
+                  00011bbe    00000026     I2C_OLED.obj (.text:I2C_Stop_OLED)
+                  00011be4    00000026     I2C_OLED.obj (.text:I2C_start_OLED)
+                  00011c0a    00000024     rts430x_lc_rd_eabi.lib : mult32_f5hw.obj (.text)
+                  00011c2e    00000020                            : sprintf.obj (.text:_outs)
+                  00011c4e    0000001e     I2C_IncSreen.obj (.text:UpDataIncScreen)
+                  00011c6c    0000001e     rts430x_lc_rd_eabi.lib : memccpy.obj (.text:memccpy)
+                  00011c8a    00000018                            : mult16_f5hw.obj (.text)
+                  00011ca2    00000016                            : memset.obj (.text:memset)
+                  00011cb8    00000016                            : div16u.obj (.text)
+                  00011cce    00000014     I2C_OLED.obj (.text:OLED_WRITE_dat)
+                  00011ce2    00000014     rts430x_lc_rd_eabi.lib : sprintf.obj (.text:_outc)
+                  00011cf6    00000014                            : memcpy.obj (.text:memcpy)
+                  00011d0a    00000012     I2C_OLED.obj (.text:OLED_WRITE_COM)
+                  00011d1c    00000012     rts430x_lc_rd_eabi.lib : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  00011d2e    00000010     myADC.obj (.text:Open_ADC12_A)
+                  00011d3e    00000010     System.obj (.text:System_Init)
+                  00011d4e    00000010     rts430x_lc_rd_eabi.lib : lsr32.obj (.text:l_lsr)
+                  00011d5e    0000000e     myTimer.obj (.text:Init_Timer0_A)
+                  00011d6c    0000000e     KeyBroad.obj (.text:KeyBroadInit)
+                  00011d7a    0000000e     rts430x_lc_rd_eabi.lib : strlen.obj (.text:strlen)
+                  00011d88    0000000c     myADC.obj (.text:Close_ADC12_A)
+                  00011d94    00000008     I2C_OLED.obj (.text:OLED_CLC)
+                  00011d9c    00000006     rts430x_lc_rd_eabi.lib : fltud.obj (.text:__mspabi_fltud)
+                  00011da2    00000006                            : exit.obj (.text:abort)
+                  00011da8    00000006                            : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  00011dae    00000004                            : pre_init.obj (.text:_system_pre_init)
+                  00011db2    00000002                            : startup.obj (.text:_system_post_cinit)
 
 MODULE SUMMARY
 
        Module                     code   ro data   rw data
        ------                     ----   -------   -------
     .\
-       main.obj                   238    6         5      
+       main.obj                   248    4         19     
     +--+--------------------------+------+---------+---------+
-       Total:                     238    6         5      
+       Total:                     248    4         19     
                                                           
     .\HARDWARE\
+       myADC.obj                  316    0         3      
        mySPI.obj                  100    2         3      
        myIIC.obj                  40     2         0      
        myTimer.obj                38     2         0      
        myKey.obj                  12     4         0      
     +--+--------------------------+------+---------+---------+
-       Total:                     190    10        3      
+       Total:                     506    10        6      
+                                                          
+    .\INCSCREEN\
+       I2C_IncSreen.obj           900    29        0      
+    +--+--------------------------+------+---------+---------+
+       Total:                     900    29        0      
                                                           
     .\OLED\
-       I2C_OLED.obj               850    1520      0      
+       I2C_OLED.obj               850    0         0      
     +--+--------------------------+------+---------+---------+
-       Total:                     850    1520      0      
+       Total:                     850    0         0      
                                                           
     .\SOFTWARE\
+       codetab.obj                0      1520      0      
        System.obj                 182    0         0      
        KeyBroad.obj               14     0         0      
        Usual.obj                  0      0         10     
     +--+--------------------------+------+---------+---------+
-       Total:                     196    0         10     
+       Total:                     196    1520      10     
                                                           
     C:\ti\ccsv6\tools\compiler\ti-cgt-msp430_15.12.1.LTS\lib\rts430x_lc_rd_eabi.lib
+       frcdivd.obj                1158   0         0      
        _printfi_min.obj           804    20        0      
+       frcmpyd.obj                740    0         0      
+       mpyd.obj                   642    0         0      
+       divd.obj                   546    0         0      
        autoinit_wdt.obj           130    0         0      
+       fltuld.obj                 128    0         0      
        sprintf.obj                120    0         0      
        copy_decompress_rle.obj    110    0         0      
        cpy_tbl.obj                102    0         0      
        fixdli.obj                 102    0         0      
+       lsr32.obj                  78     0         0      
+       asr32.obj                  62     0         0      
        lsl32.obj                  62     0         0      
+       mult32_f5hw.obj            36     0         0      
        memccpy.obj                30     0         0      
        boot_special.obj           26     0         0      
        mult16_f5hw.obj            24     0         0      
@@ -291,10 +337,10 @@ MODULE SUMMARY
        memset.obj                 22     0         0      
        memcpy.obj                 20     0         0      
        copy_decompress_none.obj   18     0         0      
-       lsr32.obj                  16     0         0      
        strlen.obj                 14     0         0      
        isr_trap.obj               8      0         0      
        exit.obj                   6      0         0      
+       fltud.obj                  6      0         0      
        pre_init.obj               4      0         0      
        boot.obj                   0      2         0      
        int41.obj                  0      2         0      
@@ -309,29 +355,31 @@ MODULE SUMMARY
        int53.obj                  0      2         0      
        int54.obj                  0      2         0      
        int55.obj                  0      2         0      
+       int57.obj                  0      2         0      
        int59.obj                  0      2         0      
        int60.obj                  0      2         0      
        int61.obj                  0      2         0      
        int62.obj                  0      2         0      
        startup.obj                2      0         0      
     +--+--------------------------+------+---------+---------+
-       Total:                     1642   54        0      
+       Total:                     5022   56        0      
                                                           
        Stack:                     0      0         160    
-       Linker Generated:          0      34        0      
+       Linker Generated:          0      56        0      
     +--+--------------------------+------+---------+---------+
-       Grand Total:               3116   1624      178    
+       Grand Total:               7722   1675      195    
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 000062b8 records: 1, size/record: 8, table size: 8
-	.data: load addr=0000629e, load size=00000012 bytes, run addr=00001c00, run size=00000013 bytes, compression=rle
+__TI_cinit_table @ 000062c6 records: 2, size/record: 8, table size: 16
+	.data: load addr=0000629c, load size=00000017 bytes, run addr=00001c00, run size=0000001b bytes, compression=rle
+	.bss: load addr=000062b4, load size=00000009 bytes, run addr=00001c1c, run size=0000000a bytes, compression=rle
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 000062b0 records: 2, size/record: 4, table size: 8
+__TI_handler_table @ 000062be records: 2, size/record: 4, table size: 8
 	index: 0, handler: __TI_decompress_rle24
 	index: 1, handler: __TI_decompress_none
 
@@ -422,7 +470,9 @@ address   name
 00000732  ADC12MEM9               
 00000733  ADC12MEM9_H             
 00000732  ADC12MEM9_L             
-00010b84  C$$EXIT                 
+00011354  ADC_Init                
+000113e4  ADCs_Get                
+00011da2  C$$EXIT                 
 00000150  CRCDI                   
 00000152  CRCDIRB                 
 00000153  CRCDIRB_H               
@@ -435,6 +485,7 @@ address   name
 00000156  CRCRESR                 
 00000157  CRCRESR_H               
 00000156  CRCRESR_L               
+00011d88  Close_ADC12_A           
 00000510  DMA0CTL                 
 00000511  DMA0CTL_H               
 00000510  DMA0CTL_L               
@@ -483,7 +534,7 @@ address   name
 0000050e  DMAIV                   
 0000050f  DMAIV_H                 
 0000050e  DMAIV_L                 
-00005c96  F8X16                   
+00005c76  F8X16                   
 00000140  FCTL1                   
 00000141  FCTL1_H                 
 00000140  FCTL1_L                 
@@ -493,13 +544,18 @@ address   name
 00000146  FCTL4                   
 00000147  FCTL4_H                 
 00000146  FCTL4_L                 
-000103a8  I2C_OLED_Init           
-000109a6  I2C_RecvACK_OLED        
-000107b6  I2C_SendByte_OLED       
-00010a04  I2C_Stop_OLED           
-00010a2a  I2C_start_OLED          
-00010b52  Init_Timer0_A           
-00010b60  KeyBroadInit            
+000111dc  I2C_OLED_Init           
+00011b04  I2C_RecvACK_OLED        
+00011868  I2C_SendByte_OLED       
+00011bbe  I2C_Stop_OLED           
+00011be4  I2C_start_OLED          
+00010c0e  IncS_Init               
+00010f6a  IncS_P8x16Str           
+00011ad0  IncS_Set_Pos            
+00011760  IncS_Write_Com          
+000117b8  IncS_Write_Data         
+00011d5e  Init_Timer0_A           
+00011d6c  KeyBroadInit            
 000004c4  MAC                     
 000004da  MAC32H                  
 000004db  MAC32H_H                
@@ -539,13 +595,13 @@ address   name
 000004c2  MPYS_L                  
 000004c1  MPY_H                   
 000004c0  MPY_L                   
-0001080a  Num_Show                
-00010704  OLED_All                
-00010b7c  OLED_CLC                
-000102dc  OLED_P8x16Str           
-00010970  OLED_Set_Pos            
-00010b0e  OLED_WRITE_COM          
-00010ad2  OLED_WRITE_dat          
+0001190a  Num_Show                
+00011706  OLED_All                
+00011d94  OLED_CLC                
+00011110  OLED_P8x16Str           
+00011a9a  OLED_Set_Pos            
+00011d0a  OLED_WRITE_COM          
+00011cce  OLED_WRITE_dat          
 000004c8  OP2                     
 000004e2  OP2H                    
 000004e3  OP2H_H                  
@@ -555,7 +611,8 @@ address   name
 000004e0  OP2L_L                  
 000004c9  OP2_H                   
 000004c8  OP2_L                   
-00010858  Osccon_Initial          
+00011d2e  Open_ADC12_A            
+000118bc  Osccon_Initial          
 0000020e  P1IV                    
 0000021e  P2IV                    
 00000204  PADIR                   
@@ -705,11 +762,12 @@ address   name
 0000012e  PMMRIE                  
 0000012f  PMMRIE_H                
 0000012e  PMMRIE_L                
-00005c8a  Port_1                  
-00005c90  Port_2                  
+00005c6a  Port_1                  
+00005c70  Port_2                  
 00000158  RCCTL0                  
 00000159  RCCTL0_H                
 00000158  RCCTL0_L                
+00011b94  READBUSY                
 000001b0  REFCTL0                 
 000001b1  REFCTL0_H               
 000001b0  REFCTL0_L               
@@ -774,7 +832,7 @@ address   name
 00000104  SFRRPCR                 
 00000105  SFRRPCR_H               
 00000104  SFRRPCR_L               
-000106a8  SPI0SlaveDMAInit        
+000116aa  SPI0SlaveDMAInit        
 000004ce  SUMEXT                  
 000004cf  SUMEXT_H                
 000004ce  SUMEXT_L                
@@ -820,8 +878,9 @@ address   name
 0000019a  SYSUNIV                 
 0000019b  SYSUNIV_H               
 0000019a  SYSUNIV_L               
-000109d8  Single_Write_OLED       
-00010b32  System_Init             
+00011b68  Single_Write_OLED       
+00001c10  SystemTimeCounter       
+00011d3e  System_Init             
 00000352  TA0CCR0                 
 00000354  TA0CCR1                 
 00000356  TA0CCR2                 
@@ -864,7 +923,7 @@ address   name
 000003e0  TB0EX0                  
 000003ee  TB0IV                   
 000003d0  TB0R                    
-00005c62  TIMER1_A0_ISR           
+00005c42  TIMER1_A0_ISR           
 00001c00  TemptString             
 000005d0  UCA0ABCTL               
 000005c6  UCA0BRW                 
@@ -1041,25 +1100,28 @@ address   name
 00000170  UCSCTL8                 
 00000171  UCSCTL8_H               
 00000170  UCSCTL8_L               
-00005c28  USCI_A0_ISR             
 00005c00  USCI_B0_ISR             
+00011c4e  UpDataIncScreen         
 0000015c  WDTCTL                  
 0000015d  WDTCTL_H                
 0000015c  WDTCTL_L                
-00005c7a  WDT_ISR                 
+00005c5a  WDT_ISR                 
+00011b36  WRITE_LUT               
 00005c00  __STACK_END             
 000000a0  __STACK_SIZE            
 UNDEFED   __TI_BINIT_Base         
 UNDEFED   __TI_BINIT_Limit        
-000062b8  __TI_CINIT_Base         
-000062c0  __TI_CINIT_Limit        
-000062b0  __TI_Handler_Table_Base 
-000062b8  __TI_Handler_Table_Limit
+000062c6  __TI_CINIT_Base         
+000062d6  __TI_CINIT_Limit        
+000062be  __TI_Handler_Table_Base 
+000062c6  __TI_Handler_Table_Limit
 UNDEFED   __TI_INITARRAY_Base     
 UNDEFED   __TI_INITARRAY_Limit    
-00005c82  __TI_ISR_TRAP           
-00010b20  __TI_decompress_none    
-00010b8a  __TI_decompress_rle24   
+00005c62  __TI_ISR_TRAP           
+00011d1c  __TI_decompress_none    
+00011da8  __TI_decompress_rle24   
+00010000  __TI_frcdivd            
+00010486  __TI_frcmpyd            
 0000ffd2  __TI_int41              
 0000ffd4  __TI_int42              
 0000ffd6  __TI_int43              
@@ -1083,44 +1145,81 @@ UNDEFED   __TI_INITARRAY_Limit
 0000fffa  __TI_int61              
 0000fffc  __TI_int62              
 ffffffff  __TI_pprof_out_hndl     
-0001020a  __TI_printfi_minimal    
+0001103e  __TI_printfi_minimal    
 ffffffff  __TI_prof_data_size     
 ffffffff  __TI_prof_data_start    
 ffffffff  __c_args__              
-00010abc  __mspabi_divu           
-000105dc  __mspabi_fixdli         
-00010a8e  __mspabi_mpyi_f5hw      
-00010abc  __mspabi_remu           
-0001096a  __mspabi_slll_1         
-00010946  __mspabi_slll_10        
-00010942  __mspabi_slll_11        
-0001093e  __mspabi_slll_12        
-0001093a  __mspabi_slll_13        
-00010936  __mspabi_slll_14        
-00010932  __mspabi_slll_15        
-00010966  __mspabi_slll_2         
-00010962  __mspabi_slll_3         
-0001095e  __mspabi_slll_4         
-0001095a  __mspabi_slll_5         
-00010956  __mspabi_slll_6         
-00010952  __mspabi_slll_7         
-0001094e  __mspabi_slll_8         
-0001094a  __mspabi_slll_9         
-00010b42  __mspabi_srll           
-00010472  _auto_init_hold_wdt     
-00005c48  _c_int00_noargs_noexit  
+000109ec  __mspabi_divd           
+00011cb8  __mspabi_divu           
+000115de  __mspabi_fixdli         
+00011d9c  __mspabi_fltud          
+000114f6  __mspabi_fltuld         
+0001076a  __mspabi_mpyd           
+00011c8a  __mspabi_mpyi_f5hw      
+00011c0a  __mspabi_mpyl_f5hw      
+00011cb8  __mspabi_remu           
+00011a56  __mspabi_slll_1         
+00011a32  __mspabi_slll_10        
+00011a2e  __mspabi_slll_11        
+00011a2a  __mspabi_slll_12        
+00011a26  __mspabi_slll_13        
+00011a22  __mspabi_slll_14        
+00011a1e  __mspabi_slll_15        
+00011a52  __mspabi_slll_2         
+00011a4e  __mspabi_slll_3         
+00011a4a  __mspabi_slll_4         
+00011a46  __mspabi_slll_5         
+00011a42  __mspabi_slll_6         
+00011a3e  __mspabi_slll_7         
+00011a3a  __mspabi_slll_8         
+00011a36  __mspabi_slll_9         
+00011a18  __mspabi_sral_1         
+000119f4  __mspabi_sral_10        
+000119f0  __mspabi_sral_11        
+000119ec  __mspabi_sral_12        
+000119e8  __mspabi_sral_13        
+000119e4  __mspabi_sral_14        
+000119e0  __mspabi_sral_15        
+00011a14  __mspabi_sral_2         
+00011a10  __mspabi_sral_3         
+00011a0c  __mspabi_sral_4         
+00011a08  __mspabi_sral_5         
+00011a04  __mspabi_sral_6         
+00011a00  __mspabi_sral_7         
+000119fc  __mspabi_sral_8         
+000119f8  __mspabi_sral_9         
+00011d4e  __mspabi_srll           
+00011a94  __mspabi_srll_1         
+00011a70  __mspabi_srll_10        
+00011a6c  __mspabi_srll_11        
+00011a68  __mspabi_srll_12        
+00011a64  __mspabi_srll_13        
+00011a60  __mspabi_srll_14        
+00011a5c  __mspabi_srll_15        
+00011a90  __mspabi_srll_2         
+00011a8c  __mspabi_srll_3         
+00011a88  __mspabi_srll_4         
+00011a84  __mspabi_srll_5         
+00011a80  __mspabi_srll_6         
+00011a7c  __mspabi_srll_7         
+00011a78  __mspabi_srll_8         
+00011a74  __mspabi_srll_9         
+00011474  _auto_init_hold_wdt     
+00005c28  _c_int00_noargs_noexit  
 0000fffe  _reset_vector           
 00005b60  _stack                  
-00010b94  _system_post_cinit      
-00010b90  _system_pre_init        
-00010b84  abort                   
-00010642  copy_in                 
-000104f4  main                    
-00010a70  memccpy                 
-00010afa  memcpy                  
-00010aa6  memset                  
-000108ee  sprintf                 
-00010b6e  strlen                  
+00011db2  _system_post_cinit      
+00011dae  _system_pre_init        
+00011da2  abort                   
+00011644  copy_in                 
+00001c1c  g_ADCConvBuf            
+00006266  init_data               
+000112a6  main                    
+00011c6c  memccpy                 
+00011cf6  memcpy                  
+00011ca2  memset                  
+0001199c  sprintf                 
+00011d7a  strlen                  
 00001c0a  text                    
 
 
@@ -1811,21 +1910,23 @@ address   name
 0000073f  ADC12MEM15_H            
 00001c00  TemptString             
 00001c0a  text                    
+00001c10  SystemTimeCounter       
+00001c1c  g_ADCConvBuf            
 00005b60  _stack                  
 00005c00  USCI_B0_ISR             
 00005c00  __STACK_END             
-00005c28  USCI_A0_ISR             
-00005c48  _c_int00_noargs_noexit  
-00005c62  TIMER1_A0_ISR           
-00005c7a  WDT_ISR                 
-00005c82  __TI_ISR_TRAP           
-00005c8a  Port_1                  
-00005c90  Port_2                  
-00005c96  F8X16                   
-000062b0  __TI_Handler_Table_Base 
-000062b8  __TI_CINIT_Base         
-000062b8  __TI_Handler_Table_Limit
-000062c0  __TI_CINIT_Limit        
+00005c28  _c_int00_noargs_noexit  
+00005c42  TIMER1_A0_ISR           
+00005c5a  WDT_ISR                 
+00005c62  __TI_ISR_TRAP           
+00005c6a  Port_1                  
+00005c70  Port_2                  
+00005c76  F8X16                   
+00006266  init_data               
+000062be  __TI_Handler_Table_Base 
+000062c6  __TI_CINIT_Base         
+000062c6  __TI_Handler_Table_Limit
+000062d6  __TI_CINIT_Limit        
 0000ffd2  __TI_int41              
 0000ffd4  __TI_int42              
 0000ffd6  __TI_int43              
@@ -1849,59 +1950,108 @@ address   name
 0000fffa  __TI_int61              
 0000fffc  __TI_int62              
 0000fffe  _reset_vector           
-0001020a  __TI_printfi_minimal    
-000102dc  OLED_P8x16Str           
-000103a8  I2C_OLED_Init           
-00010472  _auto_init_hold_wdt     
-000104f4  main                    
-000105dc  __mspabi_fixdli         
-00010642  copy_in                 
-000106a8  SPI0SlaveDMAInit        
-00010704  OLED_All                
-000107b6  I2C_SendByte_OLED       
-0001080a  Num_Show                
-00010858  Osccon_Initial          
-000108ee  sprintf                 
-00010932  __mspabi_slll_15        
-00010936  __mspabi_slll_14        
-0001093a  __mspabi_slll_13        
-0001093e  __mspabi_slll_12        
-00010942  __mspabi_slll_11        
-00010946  __mspabi_slll_10        
-0001094a  __mspabi_slll_9         
-0001094e  __mspabi_slll_8         
-00010952  __mspabi_slll_7         
-00010956  __mspabi_slll_6         
-0001095a  __mspabi_slll_5         
-0001095e  __mspabi_slll_4         
-00010962  __mspabi_slll_3         
-00010966  __mspabi_slll_2         
-0001096a  __mspabi_slll_1         
-00010970  OLED_Set_Pos            
-000109a6  I2C_RecvACK_OLED        
-000109d8  Single_Write_OLED       
-00010a04  I2C_Stop_OLED           
-00010a2a  I2C_start_OLED          
-00010a70  memccpy                 
-00010a8e  __mspabi_mpyi_f5hw      
-00010aa6  memset                  
-00010abc  __mspabi_divu           
-00010abc  __mspabi_remu           
-00010ad2  OLED_WRITE_dat          
-00010afa  memcpy                  
-00010b0e  OLED_WRITE_COM          
-00010b20  __TI_decompress_none    
-00010b32  System_Init             
-00010b42  __mspabi_srll           
-00010b52  Init_Timer0_A           
-00010b60  KeyBroadInit            
-00010b6e  strlen                  
-00010b7c  OLED_CLC                
-00010b84  C$$EXIT                 
-00010b84  abort                   
-00010b8a  __TI_decompress_rle24   
-00010b90  _system_pre_init        
-00010b94  _system_post_cinit      
+00010000  __TI_frcdivd            
+00010486  __TI_frcmpyd            
+0001076a  __mspabi_mpyd           
+000109ec  __mspabi_divd           
+00010c0e  IncS_Init               
+00010f6a  IncS_P8x16Str           
+0001103e  __TI_printfi_minimal    
+00011110  OLED_P8x16Str           
+000111dc  I2C_OLED_Init           
+000112a6  main                    
+00011354  ADC_Init                
+000113e4  ADCs_Get                
+00011474  _auto_init_hold_wdt     
+000114f6  __mspabi_fltuld         
+000115de  __mspabi_fixdli         
+00011644  copy_in                 
+000116aa  SPI0SlaveDMAInit        
+00011706  OLED_All                
+00011760  IncS_Write_Com          
+000117b8  IncS_Write_Data         
+00011868  I2C_SendByte_OLED       
+000118bc  Osccon_Initial          
+0001190a  Num_Show                
+0001199c  sprintf                 
+000119e0  __mspabi_sral_15        
+000119e4  __mspabi_sral_14        
+000119e8  __mspabi_sral_13        
+000119ec  __mspabi_sral_12        
+000119f0  __mspabi_sral_11        
+000119f4  __mspabi_sral_10        
+000119f8  __mspabi_sral_9         
+000119fc  __mspabi_sral_8         
+00011a00  __mspabi_sral_7         
+00011a04  __mspabi_sral_6         
+00011a08  __mspabi_sral_5         
+00011a0c  __mspabi_sral_4         
+00011a10  __mspabi_sral_3         
+00011a14  __mspabi_sral_2         
+00011a18  __mspabi_sral_1         
+00011a1e  __mspabi_slll_15        
+00011a22  __mspabi_slll_14        
+00011a26  __mspabi_slll_13        
+00011a2a  __mspabi_slll_12        
+00011a2e  __mspabi_slll_11        
+00011a32  __mspabi_slll_10        
+00011a36  __mspabi_slll_9         
+00011a3a  __mspabi_slll_8         
+00011a3e  __mspabi_slll_7         
+00011a42  __mspabi_slll_6         
+00011a46  __mspabi_slll_5         
+00011a4a  __mspabi_slll_4         
+00011a4e  __mspabi_slll_3         
+00011a52  __mspabi_slll_2         
+00011a56  __mspabi_slll_1         
+00011a5c  __mspabi_srll_15        
+00011a60  __mspabi_srll_14        
+00011a64  __mspabi_srll_13        
+00011a68  __mspabi_srll_12        
+00011a6c  __mspabi_srll_11        
+00011a70  __mspabi_srll_10        
+00011a74  __mspabi_srll_9         
+00011a78  __mspabi_srll_8         
+00011a7c  __mspabi_srll_7         
+00011a80  __mspabi_srll_6         
+00011a84  __mspabi_srll_5         
+00011a88  __mspabi_srll_4         
+00011a8c  __mspabi_srll_3         
+00011a90  __mspabi_srll_2         
+00011a94  __mspabi_srll_1         
+00011a9a  OLED_Set_Pos            
+00011ad0  IncS_Set_Pos            
+00011b04  I2C_RecvACK_OLED        
+00011b36  WRITE_LUT               
+00011b68  Single_Write_OLED       
+00011b94  READBUSY                
+00011bbe  I2C_Stop_OLED           
+00011be4  I2C_start_OLED          
+00011c0a  __mspabi_mpyl_f5hw      
+00011c4e  UpDataIncScreen         
+00011c6c  memccpy                 
+00011c8a  __mspabi_mpyi_f5hw      
+00011ca2  memset                  
+00011cb8  __mspabi_divu           
+00011cb8  __mspabi_remu           
+00011cce  OLED_WRITE_dat          
+00011cf6  memcpy                  
+00011d0a  OLED_WRITE_COM          
+00011d1c  __TI_decompress_none    
+00011d2e  Open_ADC12_A            
+00011d3e  System_Init             
+00011d4e  __mspabi_srll           
+00011d5e  Init_Timer0_A           
+00011d6c  KeyBroadInit            
+00011d7a  strlen                  
+00011d88  Close_ADC12_A           
+00011d94  OLED_CLC                
+00011d9c  __mspabi_fltud          
+00011da2  C$$EXIT                 
+00011da2  abort                   
+00011da8  __TI_decompress_rle24   
+00011dae  _system_pre_init        
+00011db2  _system_post_cinit      
 ffffffff  __TI_pprof_out_hndl     
 ffffffff  __TI_prof_data_size     
 ffffffff  __TI_prof_data_start    
@@ -1911,4 +2061,4 @@ UNDEFED   __TI_BINIT_Limit
 UNDEFED   __TI_INITARRAY_Base     
 UNDEFED   __TI_INITARRAY_Limit    
 
-[782 symbols]
+[833 symbols]

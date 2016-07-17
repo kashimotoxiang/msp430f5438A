@@ -1,12 +1,4 @@
-/*
- * codetab.h
- *
- *  Created on: 2014-10-4
- *      Author: ZhouChuGang
- */
-
-#ifndef CODETAB_H_
-#define CODETAB_H_
+#include "codetab.h"
 /*本头文件为字模库，请把要显示的字模放入本文件中，注意 类型必须为const u8 否则报错！！*/
 /*************取字方式 -- 共阴、列行式、逆向输出****************************/
 /****注释前缀//   数据前缀0x    数据后缀,  行后缀,   其它自定义格式为空*********/
@@ -289,4 +281,3 @@ const unsigned char  F16x16[] =
 0x00,0x04,0x04,0x04,0x04,0x0C,0x34,0x04,0x44,0x84,0x7F,0x04,0x04,0x04,0x00,0x00,/*"等",31*/
 };
 
-#endif /* CODETAB_H_ */

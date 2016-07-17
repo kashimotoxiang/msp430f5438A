@@ -16,10 +16,12 @@ ORDERED_OBJS += \
 "./HARDWARE/myKey.obj" \
 "./HARDWARE/mySPI.obj" \
 "./HARDWARE/myTimer.obj" \
+"./INCSCREEN/I2C_IncSreen.obj" \
 "./OLED/I2C_OLED.obj" \
 "./SOFTWARE/KeyBroad.obj" \
 "./SOFTWARE/System.obj" \
 "./SOFTWARE/Usual.obj" \
+"./SOFTWARE/codetab.obj" \
 "../lnk_msp430f5438a.cmd" \
 $(GEN_CMDS__FLAG) \
 -llibmath.a \
@@ -34,10 +36,12 @@ RMDIR := RMDIR /S/Q
 -include sources.mk
 -include subdir_vars.mk
 -include HARDWARE/subdir_vars.mk
+-include INCSCREEN/subdir_vars.mk
 -include OLED/subdir_vars.mk
 -include SOFTWARE/subdir_vars.mk
 -include subdir_rules.mk
 -include HARDWARE/subdir_rules.mk
+-include INCSCREEN/subdir_rules.mk
 -include OLED/subdir_rules.mk
 -include SOFTWARE/subdir_rules.mk
 -include objects.mk
@@ -168,8 +172,8 @@ msp430f5438A.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "HARDWARE\myADC.d" "HARDWARE\myIIC.d" "HARDWARE\myKey.d" "HARDWARE\mySPI.d" "HARDWARE\myTimer.d" "OLED\I2C_OLED.d" "SOFTWARE\KeyBroad.d" "SOFTWARE\System.d" "SOFTWARE\Usual.d" 
-	-$(RM) "main.obj" "HARDWARE\myADC.obj" "HARDWARE\myIIC.obj" "HARDWARE\myKey.obj" "HARDWARE\mySPI.obj" "HARDWARE\myTimer.obj" "OLED\I2C_OLED.obj" "SOFTWARE\KeyBroad.obj" "SOFTWARE\System.obj" "SOFTWARE\Usual.obj" 
+	-$(RM) "main.d" "HARDWARE\myADC.d" "HARDWARE\myIIC.d" "HARDWARE\myKey.d" "HARDWARE\mySPI.d" "HARDWARE\myTimer.d" "INCSCREEN\I2C_IncSreen.d" "OLED\I2C_OLED.d" "SOFTWARE\KeyBroad.d" "SOFTWARE\System.d" "SOFTWARE\Usual.d" "SOFTWARE\codetab.d" 
+	-$(RM) "main.obj" "HARDWARE\myADC.obj" "HARDWARE\myIIC.obj" "HARDWARE\myKey.obj" "HARDWARE\mySPI.obj" "HARDWARE\myTimer.obj" "INCSCREEN\I2C_IncSreen.obj" "OLED\I2C_OLED.obj" "SOFTWARE\KeyBroad.obj" "SOFTWARE\System.obj" "SOFTWARE\Usual.obj" "SOFTWARE\codetab.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

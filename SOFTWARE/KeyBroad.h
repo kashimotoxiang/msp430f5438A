@@ -16,12 +16,12 @@
 #define ROWNUM 4
 #define COLNUM 4
 /*¿ØÖÆ×é-------------------------------------------------------*/
-#define Keybroad_SEL    		P9SEL
-#define Keybroad_DIR       	    P9DIR
-#define Keybroad_REN       	    P9REN
+#define Keybroad_SEL    		P8SEL
+#define Keybroad_DIR       	    P8DIR
+#define Keybroad_REN       	    P8REN
 
-#define Keybroad_OUT    		P9OUT
-#define Keybroad_IN    			P9IN
+#define Keybroad_OUT    		P8OUT
+#define Keybroad_IN    			P8IN
 /*Òý½Å-------------------------------------------------------*/
 #define OUTPIN1 BIT0
 #define OUTPIN2 BIT1

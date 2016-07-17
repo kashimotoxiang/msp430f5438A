@@ -17,10 +17,11 @@ HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/mySPI.h
 HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myADC.h
 HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myIIC.h
 HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myKey.h
-HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h
 HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h
 HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h
 HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/Usual.h
+HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h
+HARDWARE/myTimer.obj: D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/I2C_IncSreen.h
 
 ../HARDWARE/myTimer.c: 
 ../HARDWARE/myTimer.h: 
@@ -39,7 +40,8 @@ D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/mySPI.h:
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myADC.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myIIC.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myKey.h: 
-D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/Usual.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/I2C_IncSreen.h: 
