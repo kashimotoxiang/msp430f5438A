@@ -20,7 +20,7 @@ extern char TemptString[10];
 /*数字显示-------------------------------------------------------*/
 inline void Num_Show(long int data, char* com, u16 x, u16 y) {
 	sprintf(TemptString, com, data);
-	OLED_P8x16Str(x*8, y*16, TemptString);
+	OLED_P8x16Str(x * 8, y * 16, TemptString);
 }
 
 /*插入排序---------------------------------------------------------*/
@@ -45,3 +45,22 @@ inline void Swap(int ai[], int x_cur, int y_cur) {
 	return;
 }
 
+//*****************************************************************************
+//
+// OLED数字显示
+//
+//*****************************************************************************
+inline void OLED_Num2StrShow(long int data, char* com, u16 x, u16 y) {
+	sprintf(TemptString, com, data);
+	OLED_P8x16Str(x * 8, y * 16, TemptString);
+}
+
+//*****************************************************************************
+//
+// 电子墨水屏数字显示
+//
+//*****************************************************************************
+inline void IncS_Num2StrShow(long int data, char* com, u16 x, u16 y) {
+	sprintf(TemptString, com, data);
+	IncS_P8x16Str(x, y * 16, TemptString);
+}

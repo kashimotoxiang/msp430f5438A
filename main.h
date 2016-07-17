@@ -34,12 +34,14 @@ typedef u32_t u32;
 #include <msp430.h>
 #include "stdio.h" //用sprintf要用的头文件
 #include "math.h"
+
 /*Hardware-------------------------------------------------------*/
 #include "mySPI.h"
 #include "myADC.h"
-#include "myIIC.h"
 #include "myKey.h"
+#include "myIIC.h"
 #include "mySPI.h"
+#include "myUART.h"
 #include "myTimer.h"
 
 /*Software-------------------------------------------------------*/
@@ -50,6 +52,7 @@ typedef u32_t u32;
 /*User Hardware-------------------------------------------------------*/
 #include "I2C_OLED.h"
 #include "I2C_IncSreen.h"
+
 //*****************************************************************************
 //
 // define

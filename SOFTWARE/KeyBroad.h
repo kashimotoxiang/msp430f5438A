@@ -23,19 +23,26 @@
 #define Keybroad_OUT    		P8OUT
 #define Keybroad_IN    			P8IN
 /*引脚-------------------------------------------------------*/
-#define OUTPIN1 BIT0
-#define OUTPIN2 BIT1
-#define OUTPIN3 BIT2
-#define OUTPIN4 BIT3
-#define INPIN1  BIT4
-#define INPIN2  BIT5
-#define INPIN3  BIT6
-#define INPIN4  BIT7
+#define OUTPIN1 BIT7
+#define OUTPIN2 BIT6
+#define OUTPIN3 BIT5
+#define OUTPIN4 BIT4
+
+#define INPIN1  BIT3
+#define INPIN2  BIT2
+#define INPIN3  BIT1
+#define INPIN4  BIT0
+
+#define INPIN_1  BIT_3
+#define INPIN_2  BIT_2
+#define INPIN_3  BIT_1
+#define INPIN_4  BIT_0
+
 /*输入组-------------------------------------------------------*/
-#define ReadRow0 (Keybroad_IN&BIT_4)
-#define ReadRow1 (Keybroad_IN&BIT_5)
-#define ReadRow2 (Keybroad_IN&BIT_6)
-#define ReadRow3 (Keybroad_IN&BIT_7)
+#define ReadRow0 (Keybroad_IN&INPIN_1)
+#define ReadRow1 (Keybroad_IN&INPIN_2)
+#define ReadRow2 (Keybroad_IN&INPIN_3)
+#define ReadRow3 (Keybroad_IN&INPIN_4)
 /*按键状态-------------------------------------------------------*/
 #define e_KeyDown  		1
 #define e_KeyUp  		0

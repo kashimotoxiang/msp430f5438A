@@ -12,6 +12,5 @@
 // declartion
 //
 //*****************************************************************************
-void SPI0MasterInit(u8 DMAInitFlag) ;
-void SPI0SlaveDMAInit(void) ;
-inline void SPI_SendByte(uint8_t TXData);
+void UART_Init(void);
+inline void UART_SendByte(uint8_t TXData);

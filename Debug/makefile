@@ -16,6 +16,7 @@ ORDERED_OBJS += \
 "./HARDWARE/myKey.obj" \
 "./HARDWARE/mySPI.obj" \
 "./HARDWARE/myTimer.obj" \
+"./HARDWARE/myUART.obj" \
 "./INCSCREEN/I2C_IncSreen.obj" \
 "./OLED/I2C_OLED.obj" \
 "./SOFTWARE/KeyBroad.obj" \
@@ -172,8 +173,8 @@ msp430f5438A.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "HARDWARE\myADC.d" "HARDWARE\myIIC.d" "HARDWARE\myKey.d" "HARDWARE\mySPI.d" "HARDWARE\myTimer.d" "INCSCREEN\I2C_IncSreen.d" "OLED\I2C_OLED.d" "SOFTWARE\KeyBroad.d" "SOFTWARE\System.d" "SOFTWARE\Usual.d" "SOFTWARE\codetab.d" 
-	-$(RM) "main.obj" "HARDWARE\myADC.obj" "HARDWARE\myIIC.obj" "HARDWARE\myKey.obj" "HARDWARE\mySPI.obj" "HARDWARE\myTimer.obj" "INCSCREEN\I2C_IncSreen.obj" "OLED\I2C_OLED.obj" "SOFTWARE\KeyBroad.obj" "SOFTWARE\System.obj" "SOFTWARE\Usual.obj" "SOFTWARE\codetab.obj" 
+	-$(RM) "main.d" "HARDWARE\myADC.d" "HARDWARE\myIIC.d" "HARDWARE\myKey.d" "HARDWARE\mySPI.d" "HARDWARE\myTimer.d" "HARDWARE\myUART.d" "INCSCREEN\I2C_IncSreen.d" "OLED\I2C_OLED.d" "SOFTWARE\KeyBroad.d" "SOFTWARE\System.d" "SOFTWARE\Usual.d" "SOFTWARE\codetab.d" 
+	-$(RM) "main.obj" "HARDWARE\myADC.obj" "HARDWARE\myIIC.obj" "HARDWARE\myKey.obj" "HARDWARE\mySPI.obj" "HARDWARE\myTimer.obj" "HARDWARE\myUART.obj" "INCSCREEN\I2C_IncSreen.obj" "OLED\I2C_OLED.obj" "SOFTWARE\KeyBroad.obj" "SOFTWARE\System.obj" "SOFTWARE\Usual.obj" "SOFTWARE\codetab.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

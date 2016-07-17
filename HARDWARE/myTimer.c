@@ -7,7 +7,7 @@
 //*****************************************************************************
 void Init_Timer0_A(void) //定时器A0初始化设置(用于系统每1ms自动中断一次)
 {
-	TA1CCR0 = 500000;
+	TA1CCR0 = 500;
 	TA1CTL = TASSEL_1 + MC_2 + TACLR;         // SMCLK, contmode, clear TAR
 }
 

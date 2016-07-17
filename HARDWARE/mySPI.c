@@ -47,10 +47,8 @@ static char RxString = 'a';
 //
 //*****************************************************************************
 void SPI0MasterInit(u8 DMAInitFlag) {
-	/*≥ı ºªØ-------------------------------------------------------*/
-	P3DIR |= BIT4 | BIT0;
-	P3SEL |= 0x31;                            // P3.5,4,0 option select
-
+	P9SEL |= 0x31;                            // P3.0,4,5 = USCI_A2 SPI Option
+	/*-------------------------------------------------------*/
 	UCA2CTL1 |= UCSWRST;                      // **Put state machine in reset**
 	UCA2CTL0 |= UCMST + UCSYNC + UCCKPL + UCMSB;    // 3-pin, 8-bit SPI master
 													// Clock polarity high, MSB
@@ -99,7 +97,7 @@ void SPI0SlaveDMAInit(void) {
 	SFRIE1 |= WDTIE;                          // Enable WDT interrupt
 
 	/*-------------------------------------------------------*/
-	P9SEL |= 0x31;                            // P3.0,4,5 = USCI_A2 SPI Option
+	P9SEL |= BIT0+BIT4+BIT5;                            // P9.0,4,5 = USCI_A2 SPI Option
 
 	UCA2CTL1 |= UCSWRST;                      // **Put state machine in reset**
 	UCA2CTL0 = UCMST + UCSYNC + UCCKPL + UCMSB;     // 3-pin, 8-bit SPI master
@@ -152,3 +150,13 @@ void __attribute__ ((interrupt(WDT_VECTOR))) WDT_ISR (void)
 	DMA0CTL |= DMAEN;                         // DMA0 Enable
 }
 
+//*****************************************************************************
+//
+// UART∑¢ÀÕ
+//
+//*****************************************************************************
+inline void SPI_SendByte(uint8_t TXData) {
+	while (!(UCA2IFG & UCTXIFG))
+		;               // USCI_A2 TX buffer ready?
+	UCA2TXBUF = TXData;
+}

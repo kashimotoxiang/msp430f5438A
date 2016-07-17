@@ -56,7 +56,7 @@
 // declartion
 //
 //*****************************************************************************
-void UpDataIncScreen();
+void IncS_Updata();
 void READBUSY(void);
 void IncS_Init(void);
 void WRITE_LUT(void);

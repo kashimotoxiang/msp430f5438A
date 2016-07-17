@@ -16,6 +16,7 @@ HARDWARE/myIIC.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include
 HARDWARE/myIIC.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/mySPI.h
 HARDWARE/myIIC.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myADC.h
 HARDWARE/myIIC.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myKey.h
+HARDWARE/myIIC.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myUART.h
 HARDWARE/myIIC.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h
 HARDWARE/myIIC.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h
 HARDWARE/myIIC.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h
@@ -39,6 +40,7 @@ C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include/_defs.h:
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/mySPI.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myADC.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myKey.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myUART.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h: 

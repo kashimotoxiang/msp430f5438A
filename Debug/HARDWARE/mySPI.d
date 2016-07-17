@@ -14,8 +14,9 @@ HARDWARE/mySPI.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include
 HARDWARE/mySPI.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include/math.h
 HARDWARE/mySPI.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include/_defs.h
 HARDWARE/mySPI.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myADC.h
-HARDWARE/mySPI.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myIIC.h
 HARDWARE/mySPI.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myKey.h
+HARDWARE/mySPI.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myIIC.h
+HARDWARE/mySPI.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myUART.h
 HARDWARE/mySPI.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h
 HARDWARE/mySPI.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h
 HARDWARE/mySPI.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h
@@ -37,8 +38,9 @@ C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include/stdarg.h:
 C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include/math.h: 
 C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include/_defs.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myADC.h: 
-D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myIIC.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myKey.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myIIC.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myUART.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h: 
