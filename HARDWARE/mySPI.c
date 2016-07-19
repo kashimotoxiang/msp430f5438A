@@ -1,122 +1,185 @@
-//******************************************************************************
-//   MSP430F543xA Demo - USCI_B2, SPI 3-Wire Slave Data Echo
-//
-//   Description: SPI slave talks to SPI master using 3-wire mode. Data received
-//   from master is echoed back.  USCI RX ISR is used to handle communication,
-//   CPU normally in LPM4.  Prior to initial data exchange, master pulses
-//   slaves RST for complete reset.
-//   ACLK = ~32.768kHz, MCLK = SMCLK = DCO ~ 1048kHz
-//
-//   Use with SPI Master Incremented Data code example.  If the slave is in
-//   debug mode, the reset signal from the master will conflict with slave's
-//   JTAG; to work around, use IAR's "Release JTAG on Go" on slave device.  If
-//   breakpoints are set in slave RX ISR, master must stopped also to avoid
-//   overrunning slave RXBUF.
-//
-//                   MSP430F5438A
-//                 -----------------
-//            /|\ |                 |
-//             |  |                 |
-//    Master---+->|RST          P1.0|-> LED
-//                |                 |
-//                |             P3.4|-> Data Out (UCB2SIMO)
-//                |                 |
-//                |             P3.5|<- Data In (UCB2SOMI)
-//                |                 |
-//                |             P3.0|-> Serial Clock Out (UCB2CLK)
-//
-//
-//   M. Morales
-//   Texas Instruments Inc.
-//   October 2008
-//   Built with CCE Version: 3.2.2 and IAR Embedded Workbench Version: 4.11B
-//******************************************************************************
 #include "mySPI.h"
 
-//*****************************************************************************
-//
-// Static Varible
-//
-//*****************************************************************************
-static uint8_t DMASwitch = 0; //因为只有一个ADC，设置一个DMA开关
-static char TxString[] = { 'A', 'b', 'c' };
-static char RxString = 'a';
-/*Normal-------------------------------------------------------*/
-//*****************************************************************************
-//
-// SPI Master 初始化
-//
-//*****************************************************************************
-void SPI0MasterInit(u8 DMAInitFlag) {
-	P9SEL |= 0x31;                            // P3.0,4,5 = USCI_B2 SPI Option
-	/*-------------------------------------------------------*/
-	UCB2CTL1 |= UCSWRST;                      // **Put state machine in reset**
-	UCB2CTL0 |= UCMST + UCSYNC + UCCKPL + UCMSB;    // 3-pin, 8-bit SPI master
-													// Clock polarity high, MSB
-	UCB2CTL1 |= UCSSEL_2;                     // SMCLK
-	UCB2BR0 = 0x02;                           // /2
-	UCB2BR1 = 0;                              //
-	UCB2CTL1 &= ~UCSWRST;                   // **Initialize USCI state machine**
-	UCB2CTL1 &= ~UCSWRST;                   // **Initialize USCI state machine**
-	UCB2IE |= UCRXIE;                         // Enable USCI_B2 RX interrupt
-
-	/*-------------------------------------------------------*/
-	if (DMAInitFlag) {
-		DMASwitch = 1;                         //表示启动DMA
-		DMACTL0 &= ~DMA0TSEL_31;           //DMA0 is triggered by USCIB2 receive
-		DMACTL0 = DMA0TSEL_17;            //DMA0 is triggered by USCIB2 transmit
-		//DMA0SA = (int) g_SPITxBuf ;                           // Source 字地址
-		DMA0DA = (int) &UCB2RXBUF;                                // 目的字地址
-		//DMA0SZ = sizeof(g_SPITxBuf);                                      //传输大小
-		DMA0CTL = DMADT_0 + DMADSTINCR_3 + DMASBDB + DMAEN; // 重复字节传输
-	}
-	/*-------------------------------------------------------*/
-	P1OUT &= ~0x02;                         // Now with SPI signals initialized,
-	P1OUT |= 0x02;                            // reset slave
-
-	__delay_cycles(100);                      // Wait for slave to initialize
-	/*-------------------------------------------------------*
-	 MST_Data = 0x01;                          // Initialize data values
-	 SLV_Data = 0x00;                          //
-
-	 while (!(UCB2IFG & UCTXIFG))
-	 ;               // USCI_B2 TX buffer ready?
-	 UCB2TXBUF = MST_Data;                     // Transmit first character
-
-	 __bis_SR_register(LPM0_bits + GIE);       // CPU off, enable interrupts
-	 *-------------------------------------------------------*/
-}
-//*****************************************************************************
-//
-// SPI Slave DMA初始化
-//
-//*****************************************************************************
-void SPI0SlaveDMAInit(void) {
-	P9SEL |= BIT1 + BIT2 + BIT3;                // P9.0,4,5 = USCI_B2 SPI Option
-
-	UCB2CTL1 |= UCSWRST;
-	UCB2CTL0 |= UCMST + UCMSB + UCSYNC + UCCKPH; // 3-pin, 8-bit SPI master,Clock polarity high, MSB
-	UCB2CTL1 |= UCSSEL_1;                 // CLOCK ACLK
-	UCB2BR0 = 0x06;
-	UCB2BR1 = 0x00;
-	UCB2CTL1 &= ~UCSWRST;
-}
-
-//*****************************************************************************
-//
-// Trigger DMA0 & DMA1 block transfer.
-//
-//*****************************************************************************
-#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
-#pragma vector=WDT_VECTOR
-__interrupt void WDT_ISR(void)
-#elif defined(__GNUC__)
-void __attribute__ ((interrupt(WDT_VECTOR))) WDT_ISR (void)
-#else
-#error Compiler not supported!
-#endif
+#define DEALYUS__   100
+void SPI_IO_Init(void)                    //引脚初始化
 {
-	DMA0CTL |= DMAEN;                         // DMA0 Enable
+	SPI_DIR |= SPI_CS_PIN + SPI_CLK_PIN + SPI_DIO_PIN;
+	SPI_DIR &= ~SPI_DO_PIN;
+	SPI_REN|=SPI_DO_PIN;
+
+	SPI_CS_1;
+	SPI_CLK_0;
+	delay_ms(10);
 }
 
+//写入一个字节
+void Spi_WriteByte(uchar data) {
+	uchar i;
+	SPI_CLK_0;                                    //模式0
+	delay_us(DEALYUS__);
+	for (i = 0; i < 8; i++) {
+		SPI_CLK_0;
+		if (0x80 & data)
+			SPI_DIO_1;
+		else
+			SPI_DIO_0;
+		delay_us(DEALYUS__);
+		SPI_CLK_1;
+		delay_us(DEALYUS__);
+		data <<= 1;
+	}
+	SPI_CLK_0;
+	SPI_DIO_0;
+	delay_us(DEALYUS__);
+}
 
+//读取一个字节
+uchar Spi_ReadByte(void) {
+	uchar i, temp = 0;
+	SPI_CLK_0;                                    //模式0
+	delay_us(DEALYUS__);
+	for (i = 0; i < 8; i++) {
+		temp <<= 1;
+		SPI_CLK_1;
+		delay_us(DEALYUS__);
+		if (SPI_DO_IN)        //读取最高位，保存至最末尾，通过左移位完成整个字节
+			temp |= 0x01;
+		SPI_CLK_0;
+		delay_us(DEALYUS__);
+	}
+	SPI_CLK_0;
+	SPI_DIO_0;
+	delay_us(DEALYUS__);
+	return temp;
+}
+
+//芯片写使能
+void Write_Enable(void) {
+	SPI_CS_0;
+	delay_us(1);
+	Spi_WriteByte(WRITE_ENABLE);
+	SPI_CS_1;
+}
+
+//芯片禁止写入
+void Write_Disable(void) {
+	SPI_CS_0;
+	delay_us(1);
+	Spi_WriteByte(WRITE_DISABLE);
+	SPI_CS_1;
+}
+
+//读取芯片状态寄存器
+uchar Read_StatReg(void) {
+	uchar temp;
+	SPI_CS_0;
+	delay_us(1);
+	Spi_WriteByte(READ_STATUSREG);
+	temp = Spi_ReadByte();
+	SPI_CS_1;
+	return temp;
+}
+
+//写状态寄存器
+void Write_StatReg(uchar com) {
+	SPI_CS_0;
+	delay_us(1);
+	Spi_WriteByte(WRITE_STATUSREG);
+	Spi_WriteByte(com);
+	SPI_CS_1;
+}
+
+void Erase_Page(long address) {
+	uchar H, M, L;
+	H = address >> 16;
+	M = address >> 8;
+	L = address & 0xff;
+
+	Write_Enable();             //先执行写使能
+	SPI_CS_0;
+	delay_us(1);
+	Spi_WriteByte(CLEAR_PAGE);
+	Spi_WriteByte(H);
+	Spi_WriteByte(M);
+	Spi_WriteByte(L);
+	SPI_CS_1;
+}
+
+//在任意地址写入一个字节
+void Write_Byte(long address, uchar byte) {
+	uchar H, M, L;
+	H = address >> 16;
+	M = address >> 8;
+	L = address & 0xff;
+
+	SPI_CS_0;
+	delay_us(1);
+	Spi_WriteByte(WRITE_PAGE);
+	Spi_WriteByte(H);
+	Spi_WriteByte(M);
+	Spi_WriteByte(L);
+
+	Spi_WriteByte(byte);
+
+	SPI_CS_1;
+}
+
+//在任意地址开始写入一个数据包（最大长度不超过256个字节）
+void Write_Date(long address, uchar Date_Buf[], uchar size) {
+	uchar i;
+	uchar H, M, L;
+	H = address >> 16;
+	M = address >> 8;
+	L = address & 0xff;
+
+	SPI_CS_0;
+	delay_us(1);
+	Spi_WriteByte(WRITE_PAGE);
+	Spi_WriteByte(H);
+	Spi_WriteByte(M);
+	Spi_WriteByte(L);
+	for (i = 0; i < size; i++) {
+		Spi_WriteByte(Date_Buf[i]);
+	}
+	SPI_CS_1;
+}
+
+//在任意地址读出一个字节
+uchar Read_Byte(long address) {
+	uchar temp;
+	uchar H, M, L;
+	H = address >> 16;
+	M = address >> 8;
+	L = address & 0xff;
+
+	SPI_CS_0;
+	delay_us(1);
+	Spi_WriteByte(READ_DATE);
+	Spi_WriteByte(H);
+	Spi_WriteByte(M);
+	Spi_WriteByte(L);
+	temp = Spi_ReadByte();
+	SPI_CS_1;
+	return temp;
+}
+
+//从任意地址开始读出数据
+void Read_Data(long address, uchar Date_Buf[], uint size) {
+	uchar i;
+	uchar H, M, L;
+	H = address >> 16;
+	M = address >> 8;
+	L = address & 0xff;
+
+	SPI_CS_0;
+	delay_us(1);
+	Spi_WriteByte(READ_DATE);
+	Spi_WriteByte(H);
+	Spi_WriteByte(M);
+	Spi_WriteByte(L);
+	for (i = 0; i < size; i++) {
+		Date_Buf[i] = Spi_ReadByte();
+	}
+
+	SPI_CS_1;
+}

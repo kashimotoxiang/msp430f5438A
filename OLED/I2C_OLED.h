@@ -47,28 +47,28 @@ void I2C_SendACK_OLED(u8 ack);								//I2C ACK/NACK
 u8 I2C_RecvACK_OLED();										//接收ACK
 void I2C_SendByte_OLED(u8 dat);								//WRITE DATA
 u8 I2C_RecvByte_OLED();										//REND DATA
-void Single_Write_OLED(u8 REG_Address,u8 REG_data);	//ADDRESS WRITE DATA
+void Single_Write_OLED(u8 REG_Address, u8 REG_data);	//ADDRESS WRITE DATA
 
 void I2C_OLED_Init(void);								    //OLED初始化
 
 void OLED_WRITE_COM(u8 com);							    //写命令
-void OLED_WRITE_dat(u8 data);							    //写数据
-void OLED_Set_Pos(u8 x,u8 y);	 						    //设置OLED坐标
+void OLED_WRITE_DATA(u8 data);							    //写数据
+void OLED_Set_Pos(u8 x, u8 y);	 						    //设置OLED坐标
 void OLED_All(u8 bmp_dat);								    //OLED全屏写同一数据
 void OLED_CLC(void);   									    //清屏
-void OLED_P8x16Str(u8 x,u8 y, u8 ch[]);						//显示8*16一组标准ASCII字符串
-void OLED_P6x8Str(u8 x,u8 y, u8 ch[]);						//显示6*8一组标准ASCII字符串
+void OLED_P8x16Str(u8 x, u8 y, u8 ch[]);					//显示8*16一组标准ASCII字符串
+void OLED_P6x8Str(u8 x, u8 y, u8 ch[]);						//显示6*8一组标准ASCII字符串
 
 /*****************功能描述：显示16*16点阵  显示的坐标（x,y），y为页范围0～7****************************/
 /*****************细节描述:只显示codetab.h文件中F16x16[]数组内点阵，num为显示字模在数组中的位置**********/
-void OLED_P16x16Ch(u8 x,u8 y,u8 num);
+void OLED_P16x16Ch(u8 x, u8 y, u8 num);
 
 /******功能描述：显示显示BMP图片128×64   全屏显示*********************/
 void Draw_BMP(const u8 *BMP);
 
 /*************注意！以下函数不可用！G2533 RAM太小********************/
-void OLED_Fill(u8 x1,u8 y1,u8 x2,u8 y2,u8 dot);			    //画对角线
-void OLED_DrawPoint(u8 x,u8 y,u8 t);					    //画点
+void OLED_Fill(u8 x1, u8 y1, u8 x2, u8 y2, u8 dot);			    //画对角线
+void OLED_DrawPoint(u8 x, u8 y, u8 t);					    //画点
 void OLED_Refresh_Gram(void);							    //更新显存到LCD
 
 #endif /* I2C_OLED_H_ */

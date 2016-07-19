@@ -15,7 +15,7 @@
 /*  ---------------------------------------------------------*/
 void Bubble_Sort(uint8_t volatile* num, int n);
 //---------------------------------------------------------------------//
-extern char TemptString[10];
+extern char TemptString[20];
 
 /*数字显示-------------------------------------------------------*/
 inline void Num_Show(long int data, char* com, u16 x, u16 y) {
@@ -50,17 +50,34 @@ inline void Swap(int ai[], int x_cur, int y_cur) {
 // OLED数字显示
 //
 //*****************************************************************************
-inline void OLED_Num2StrShow(long int data, char* com, u16 x, u16 y) {
-	sprintf(TemptString, com, data);
+inline void OLED_Num2StrShow_Int(int data, u16 x, u16 y) {
+	sprintf(TemptString, "%d", data);
 	OLED_P8x16Str(x * 8, y * 16, TemptString);
 }
 
+inline void OLED_Num2StrShow_Double(double data, u16 x, u16 y) {
+	F2S(data, TemptString);
+	OLED_P8x16Str(x * 8, y * 16, TemptString);
+}
 //*****************************************************************************
 //
 // 电子墨水屏数字显示
 //
 //*****************************************************************************
-inline void IncS_Num2StrShow(long int data, char* com, u16 x, u16 y) {
-	sprintf(TemptString, com, data);
+inline void IncS_Num2StrShow_Int(int data, u16 x, u16 y) {
+	sprintf(TemptString, "%d", data);
 	IncS_P8x16Str(x, y * 16, TemptString);
 }
+
+inline void IncS_Num2StrShow_Double(double data, u16 x, u16 y) {
+	F2S(data, TemptString);
+	IncS_P8x16Str(x, y * 16, TemptString);
+
+}
+
+//*****************************************************************************
+//
+// declartion
+//
+//*****************************************************************************
+void F2S(double d, char* str);

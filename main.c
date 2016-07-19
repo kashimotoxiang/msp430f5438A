@@ -13,8 +13,9 @@ long SystemTimeCounter = 0; //系统延时即使专用
 SPIDataType g_SPIRxBuf[SPI_RXBUF_SIZE];
 ADCDataType g_ADCConvBuf[ADC_CONVBUF_SIZE];
 int g_KeyValue;
-extern const u8 lan[];
-unsigned char text[] = "ADC:";
+unsigned char FreqStr[] = "Freq:";
+unsigned char ProxStr[] = "Prox:";
+struct LDC1000DATA_Struct LDC1000 = { 0 };
 //*****************************************************************************
 //
 // main
@@ -28,6 +29,9 @@ int main(void) {
 	//系统初始化
 	System_Init();
 
+	//初始化定时器
+	Init_Timer0_A(); //定时器A0初始化设置(用于系统每1ms自动中断一次)
+
 	//初始化矩阵键盘
 	KeyBroadInit();
 
@@ -35,8 +39,10 @@ int main(void) {
 	I2C_OLED_Init();
 
 	//初始化电子墨水屏
-	//IncS_Init();
-
+	IncS_Init();
+	DIS_IMG(PIC_WHITE);
+	DIS_IMG(PIC_WHITE);
+	EPD_init_Part();
 	//DMA方式初始化ADC
 	ADC_Init(DMACLOSE);
 
@@ -46,18 +52,11 @@ int main(void) {
 	//UART初始化
 	UART_Init();
 
-	//DMA方式初始化SPI
-	SPI0SlaveDMAInit();
-
-	//LDC1000初始化
-	/*LDC CLK for Freq counter (set to output selected clock)-------------------------------------------------------*/
-	LCD1000_CLK_DIR |= LCD1000_CLK_PIN;
-	LCD1000_CLK_SEL |= LCD1000_CLK_PIN;
-	/*CS-------------------------------------------------------*/
-	LCD1000_CS_DIR |= LCD1000_CS_PIN;  // Output
-	LCD1000_CS_SEL &= ~LCD1000_CS_PIN;
-
-	LDC1000_INIT();
+//	//LDC1000初始化
+//	while (LDC1000.freq == 0 || LDC1000.prox == 0) {
+//		LDC1000_INIT();
+//		LDC1000_ValueGet(&LDC1000);
+//	}
 	/*-------------------------------------------------------*/
 	while (1) {
 
@@ -67,16 +66,22 @@ int main(void) {
 //
 //		OLED_Num2StrShow(ADCSingleConv, "%d", 5, 0);
 
-		LDC1000_INIT();
-		LDC1000_READ();
-//		IncS_Num2StrShow(ADCSingleConv, "%d", 5, 0);
-//		IncS_P8x16Str(0x04, 0X00, text);
+	//	LDC1000_ValueGet(&LDC1000);
+
+//		IncS_P8x16Str(5, 0, FreqStr);
+//		IncS_Num2StrShow_Double(LDC1000.freq, 5, COUNTOF(FreqStr));
+//
+//		IncS_P8x16Str(2, 0, ProxStr);
+//		IncS_Num2StrShow_Double(LDC1000.prox, 2, COUNTOF(ProxStr));
+//
 //		IncS_Updata();
 
-		//TA1CCTL0 = CCIE; //开始计时
+		EPD_Dis_Part(0, 60,0xF9,0);
+		//part_display(2, 0,2,120);
 
-		//__bis_SR_register(SLEEPLIEVEL + GIE);   // Enter LPM0, enable interrupts
-		//__no_operation();                       // Remain in LPM0 until all data
+//		TA1CCTL0 = CCIE; //开始计时
+//		__bis_SR_register(SLEEPLIEVEL + GIE);   // Enter LPM0, enable interrupts
+//		__no_operation();                       // Remain in LPM0 until all data
 
 		//SPI_SendByte('A');
 

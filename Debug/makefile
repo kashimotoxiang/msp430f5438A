@@ -18,6 +18,8 @@ ORDERED_OBJS += \
 "./HARDWARE/mySPI.obj" \
 "./HARDWARE/myTimer.obj" \
 "./HARDWARE/myUART.obj" \
+"./INCSCREEN/Display_EPD_W21.obj" \
+"./INCSCREEN/Display_EPD_W21_Aux.obj" \
 "./INCSCREEN/I2C_IncSreen.obj" \
 "./OLED/I2C_OLED.obj" \
 "./SOFTWARE/KeyBroad.obj" \
@@ -174,8 +176,8 @@ msp430f5438A.hex: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)$(BIN_OUTPUTS__QUOTED)
-	-$(RM) "main.d" "HARDWARE\LDC1000_cmd.d" "HARDWARE\myADC.d" "HARDWARE\myIIC.d" "HARDWARE\myKey.d" "HARDWARE\mySPI.d" "HARDWARE\myTimer.d" "HARDWARE\myUART.d" "INCSCREEN\I2C_IncSreen.d" "OLED\I2C_OLED.d" "SOFTWARE\KeyBroad.d" "SOFTWARE\System.d" "SOFTWARE\Usual.d" "SOFTWARE\codetab.d" 
-	-$(RM) "main.obj" "HARDWARE\LDC1000_cmd.obj" "HARDWARE\myADC.obj" "HARDWARE\myIIC.obj" "HARDWARE\myKey.obj" "HARDWARE\mySPI.obj" "HARDWARE\myTimer.obj" "HARDWARE\myUART.obj" "INCSCREEN\I2C_IncSreen.obj" "OLED\I2C_OLED.obj" "SOFTWARE\KeyBroad.obj" "SOFTWARE\System.obj" "SOFTWARE\Usual.obj" "SOFTWARE\codetab.obj" 
+	-$(RM) "main.d" "HARDWARE\LDC1000_cmd.d" "HARDWARE\myADC.d" "HARDWARE\myIIC.d" "HARDWARE\myKey.d" "HARDWARE\mySPI.d" "HARDWARE\myTimer.d" "HARDWARE\myUART.d" "INCSCREEN\Display_EPD_W21.d" "INCSCREEN\Display_EPD_W21_Aux.d" "INCSCREEN\I2C_IncSreen.d" "OLED\I2C_OLED.d" "SOFTWARE\KeyBroad.d" "SOFTWARE\System.d" "SOFTWARE\Usual.d" "SOFTWARE\codetab.d" 
+	-$(RM) "main.obj" "HARDWARE\LDC1000_cmd.obj" "HARDWARE\myADC.obj" "HARDWARE\myIIC.obj" "HARDWARE\myKey.obj" "HARDWARE\mySPI.obj" "HARDWARE\myTimer.obj" "HARDWARE\myUART.obj" "INCSCREEN\Display_EPD_W21.obj" "INCSCREEN\Display_EPD_W21_Aux.obj" "INCSCREEN\I2C_IncSreen.obj" "OLED\I2C_OLED.obj" "SOFTWARE\KeyBroad.obj" "SOFTWARE\System.obj" "SOFTWARE\Usual.obj" "SOFTWARE\codetab.obj" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

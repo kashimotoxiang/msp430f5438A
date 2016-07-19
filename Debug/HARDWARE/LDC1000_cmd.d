@@ -24,6 +24,7 @@ HARDWARE/LDC1000_cmd.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyB
 HARDWARE/LDC1000_cmd.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/Usual.h
 HARDWARE/LDC1000_cmd.obj: D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h
 HARDWARE/LDC1000_cmd.obj: D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/I2C_IncSreen.h
+HARDWARE/LDC1000_cmd.obj: D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/Display_EPD_W21.h
 
 ../HARDWARE/LDC1000_cmd.c: 
 ../HARDWARE/LDC1000_cmd.h: 
@@ -49,3 +50,4 @@ D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h:
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/Usual.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/I2C_IncSreen.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/Display_EPD_W21.h: 

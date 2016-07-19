@@ -55,19 +55,10 @@
 #define LCD1000_CLK_OUT P1OUT
 #define LCD1000_CLK_PIN BIT0
 
-#define LCD1000_CS_DIR P4DIR
-#define LCD1000_CS_SEL P4SEL
-#define LCD1000_CS_OUT P4OUT
-#define LCD1000_CS_PIN BIT7
-
-#define LCD1000_CS_CLR LCD1000_CS_OUT&=~LCD1000_CS_PIN
-#define LCD1000_CS_SET LCD1000_CS_OUT|=LCD1000_CS_PIN
-
-
 
 struct LDC1000DATA_Struct {
-	char proxDATA[2];
-	char freqDATA[3];
+	double freq;
+	double prox;
 
 	int proxMIN;
 	int freqMIN;
@@ -79,5 +70,6 @@ struct LDC1000DATA_Struct {
 
 extern struct LDC1000DATA_Struct LDC1000;
 
-void LDC1000_READ(void);
 void LDC1000_INIT(void);
+void LDC1000_ValueGet(struct LDC1000DATA_Struct *m_pLDCs) ;
+void LDC1000_READ(int *prox, int *freq);
