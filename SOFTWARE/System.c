@@ -5,8 +5,7 @@
 // declartion
 //
 //*****************************************************************************
-static void SetVcoreUp(unsigned int level);
-
+static void SetVCoreUp(unsigned int level);
 //*****************************************************************************
 //
 // 系统初始化
@@ -26,41 +25,33 @@ void System_Init(void) {
 //
 //*****************************************************************************
 void Osccon_Initial(void) {
-	SetVcoreUp(PMMCOREV_1);
-	SetVcoreUp(PMMCOREV_2);                     // Set VCore to 1.8MHz for 20MHz
+	SetVCoreUp(1);
+	SetVCoreUp(2);
+	SetVCoreUp(3);
 
-	P11DIR = BIT1 + BIT2;                       // P11.1-2 to output direction
-	P11SEL |= BIT1 + BIT2;                      // P11.1-2 to output SMCLK,MCLK
-	P5SEL |= 0x0C;                            // Port select XT2
+	//	//UCS SETTING
+	UCSCTL3 |= SELREF__REFOCLK;
 
-	UCSCTL6 &= ~XT2OFF;                       // Enable XT2
-	UCSCTL3 |= SELREF_2;                      // FLLref = REFO
-											  // Since LFXT1 is not used,
-											  // sourcing FLL with LFXT1 can cause
-											  // XT1OFFG flag to set
-	UCSCTL4 |= SELA_2;                        // ACLK=REFO,SMCLK=DCO,MCLK=DCO
-
-	// Loop until XT1,XT2 & DCO stabilizes
-	do {
-		UCSCTL7 &= ~(XT2OFFG + XT1LFOFFG + XT1HFOFFG + DCOFFG);
-		// Clear XT2,XT1,DCO fault flags
-		SFRIFG1 &= ~OFIFG;                      // Clear fault flags
-	} while (SFRIFG1 & OFIFG);                   // Test oscillator fault flag
-
-	UCSCTL6 &= ~XT2DRIVE0;                    // Decrease XT2 Drive according to
-											  // expected frequency
-	UCSCTL4 |= SELS_5 + SELM_5;               // SMCLK=MCLK=XT2
+	__bis_SR_register(SCG0);                  // Disable the FLL control loop
+	UCSCTL0 = 0x0000;                         // Set lowest possible DCOx, MODx
+	UCSCTL1 = DCORSEL_6;                     // Select DCO range 24MHz operation
+	UCSCTL2 = FLLD_0 + 731;                   // Set DCO Multiplier for 24MHz
+											  // (N + 1) * FLLRef = Fdco
+											  // (731 + 1) * 32768 = 24MHz
+											  // Set FLL Div = fDCOCLK/2
+	__bic_SR_register(SCG0);                  // Enable the FLL control loop
+	UCSCTL4 |= SELA__DCOCLK + SELS__XT1CLK + SELM__DCOCLK; //ACLK,SMCLK,MCLK Source select
+	UCSCTL5 |= DIVPA_2;                                   //ACLK output divide
+	UCSCTL6 |= XT1DRIVE_3 + XCAP_0;                       //XT1 cap
 
 }
 
-//*****************************************************************************
-//
-// SetVcoreUp
-//
-//*****************************************************************************
-static void SetVcoreUp(unsigned int level) {
-	// Open PMM registers for write
-	PMMCTL0_H = PMMPW_H;
+void SetVCoreUp(unsigned int level) {
+	// Open PMM registers for write access
+	PMMCTL0_H = 0xA5;
+	// Make sure no flags are set for iterative sequences
+//		while ((PMMIFG & SVSMHDLYIFG) == 0);
+//		while ((PMMIFG & SVSMLDLYIFG) == 0);
 	// Set SVS/SVM high side new level
 	SVSMHCTL = SVSHE + SVSHRVL0 * level + SVMHE + SVSMHRRL0 * level;
 	// Set SVM low side to new level
@@ -81,4 +72,3 @@ static void SetVcoreUp(unsigned int level) {
 	// Lock PMM registers for write access
 	PMMCTL0_H = 0x00;
 }
-

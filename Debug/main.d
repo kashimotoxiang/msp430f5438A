@@ -21,6 +21,7 @@ main.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h
 main.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h
 main.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h
 main.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/Usual.h
+main.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/LDC1000_cmd.h
 main.obj: D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h
 main.obj: D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/I2C_IncSreen.h
 
@@ -45,5 +46,6 @@ D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h:
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/Usual.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/LDC1000_cmd.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/I2C_IncSreen.h: 

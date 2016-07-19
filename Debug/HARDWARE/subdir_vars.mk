@@ -4,6 +4,7 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../HARDWARE/LDC1000_cmd.c \
 ../HARDWARE/myADC.c \
 ../HARDWARE/myIIC.c \
 ../HARDWARE/myKey.c \
@@ -12,6 +13,7 @@ C_SRCS += \
 ../HARDWARE/myUART.c 
 
 OBJS += \
+./HARDWARE/LDC1000_cmd.obj \
 ./HARDWARE/myADC.obj \
 ./HARDWARE/myIIC.obj \
 ./HARDWARE/myKey.obj \
@@ -20,6 +22,7 @@ OBJS += \
 ./HARDWARE/myUART.obj 
 
 C_DEPS += \
+./HARDWARE/LDC1000_cmd.d \
 ./HARDWARE/myADC.d \
 ./HARDWARE/myIIC.d \
 ./HARDWARE/myKey.d \
@@ -28,6 +31,7 @@ C_DEPS += \
 ./HARDWARE/myUART.d 
 
 C_DEPS__QUOTED += \
+"HARDWARE\LDC1000_cmd.d" \
 "HARDWARE\myADC.d" \
 "HARDWARE\myIIC.d" \
 "HARDWARE\myKey.d" \
@@ -36,6 +40,7 @@ C_DEPS__QUOTED += \
 "HARDWARE\myUART.d" 
 
 OBJS__QUOTED += \
+"HARDWARE\LDC1000_cmd.obj" \
 "HARDWARE\myADC.obj" \
 "HARDWARE\myIIC.obj" \
 "HARDWARE\myKey.obj" \
@@ -44,6 +49,7 @@ OBJS__QUOTED += \
 "HARDWARE\myUART.obj" 
 
 C_SRCS__QUOTED += \
+"../HARDWARE/LDC1000_cmd.c" \
 "../HARDWARE/myADC.c" \
 "../HARDWARE/myIIC.c" \
 "../HARDWARE/myKey.c" \

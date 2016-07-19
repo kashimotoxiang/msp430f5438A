@@ -1,5 +1,5 @@
 //******************************************************************************
-//   MSP430F543xA Demo - USCI_A2, SPI 3-Wire Slave Data Echo
+//   MSP430F543xA Demo - USCI_B2, SPI 3-Wire Slave Data Echo
 //
 //   Description: SPI slave talks to SPI master using 3-wire mode. Data received
 //   from master is echoed back.  USCI RX ISR is used to handle communication,
@@ -19,11 +19,11 @@
 //             |  |                 |
 //    Master---+->|RST          P1.0|-> LED
 //                |                 |
-//                |             P3.4|-> Data Out (UCA2SIMO)
+//                |             P3.4|-> Data Out (UCB2SIMO)
 //                |                 |
-//                |             P3.5|<- Data In (UCA2SOMI)
+//                |             P3.5|<- Data In (UCB2SOMI)
 //                |                 |
-//                |             P3.0|-> Serial Clock Out (UCA2CLK)
+//                |             P3.0|-> Serial Clock Out (UCB2CLK)
 //
 //
 //   M. Morales
@@ -32,6 +32,7 @@
 //   Built with CCE Version: 3.2.2 and IAR Embedded Workbench Version: 4.11B
 //******************************************************************************
 #include "mySPI.h"
+
 //*****************************************************************************
 //
 // Static Varible
@@ -47,26 +48,25 @@ static char RxString = 'a';
 //
 //*****************************************************************************
 void SPI0MasterInit(u8 DMAInitFlag) {
-	P9SEL |= 0x31;                            // P3.0,4,5 = USCI_A2 SPI Option
+	P9SEL |= 0x31;                            // P3.0,4,5 = USCI_B2 SPI Option
 	/*-------------------------------------------------------*/
-	UCA2CTL1 |= UCSWRST;                      // **Put state machine in reset**
-	UCA2CTL0 |= UCMST + UCSYNC + UCCKPL + UCMSB;    // 3-pin, 8-bit SPI master
+	UCB2CTL1 |= UCSWRST;                      // **Put state machine in reset**
+	UCB2CTL0 |= UCMST + UCSYNC + UCCKPL + UCMSB;    // 3-pin, 8-bit SPI master
 													// Clock polarity high, MSB
-	UCA2CTL1 |= UCSSEL_2;                     // SMCLK
-	UCA2BR0 = 0x02;                           // /2
-	UCA2BR1 = 0;                              //
-	UCA2MCTL = 0;                             // No modulation
-	UCA2CTL1 &= ~UCSWRST;                   // **Initialize USCI state machine**
-	UCA2CTL1 &= ~UCSWRST;                   // **Initialize USCI state machine**
-	UCA2IE |= UCRXIE;                         // Enable USCI_A2 RX interrupt
+	UCB2CTL1 |= UCSSEL_2;                     // SMCLK
+	UCB2BR0 = 0x02;                           // /2
+	UCB2BR1 = 0;                              //
+	UCB2CTL1 &= ~UCSWRST;                   // **Initialize USCI state machine**
+	UCB2CTL1 &= ~UCSWRST;                   // **Initialize USCI state machine**
+	UCB2IE |= UCRXIE;                         // Enable USCI_B2 RX interrupt
 
 	/*-------------------------------------------------------*/
 	if (DMAInitFlag) {
 		DMASwitch = 1;                         //表示启动DMA
-		DMACTL0 &= ~DMA0TSEL_31;           //DMA0 is triggered by USCIA2 receive
-		DMACTL0 = DMA0TSEL_17;            //DMA0 is triggered by USCIA2 transmit
+		DMACTL0 &= ~DMA0TSEL_31;           //DMA0 is triggered by USCIB2 receive
+		DMACTL0 = DMA0TSEL_17;            //DMA0 is triggered by USCIB2 transmit
 		//DMA0SA = (int) g_SPITxBuf ;                           // Source 字地址
-		DMA0DA = (int) &UCA2RXBUF;                                // 目的字地址
+		DMA0DA = (int) &UCB2RXBUF;                                // 目的字地址
 		//DMA0SZ = sizeof(g_SPITxBuf);                                      //传输大小
 		DMA0CTL = DMADT_0 + DMADSTINCR_3 + DMASBDB + DMAEN; // 重复字节传输
 	}
@@ -79,9 +79,9 @@ void SPI0MasterInit(u8 DMAInitFlag) {
 	 MST_Data = 0x01;                          // Initialize data values
 	 SLV_Data = 0x00;                          //
 
-	 while (!(UCA2IFG & UCTXIFG))
-	 ;               // USCI_A2 TX buffer ready?
-	 UCA2TXBUF = MST_Data;                     // Transmit first character
+	 while (!(UCB2IFG & UCTXIFG))
+	 ;               // USCI_B2 TX buffer ready?
+	 UCB2TXBUF = MST_Data;                     // Transmit first character
 
 	 __bis_SR_register(LPM0_bits + GIE);       // CPU off, enable interrupts
 	 *-------------------------------------------------------*/
@@ -92,45 +92,14 @@ void SPI0MasterInit(u8 DMAInitFlag) {
 //
 //*****************************************************************************
 void SPI0SlaveDMAInit(void) {
-	/*看门狗定时器-------------------------------------------------------*/
-	WDTCTL = WDT_ADLY_1_9;                  // WDT 1000ms, ACLK, interval timer
-	SFRIE1 |= WDTIE;                          // Enable WDT interrupt
+	P9SEL |= BIT1 + BIT2 + BIT3;                // P9.0,4,5 = USCI_B2 SPI Option
 
-	/*-------------------------------------------------------*/
-	P9SEL |= BIT0+BIT4+BIT5;                            // P9.0,4,5 = USCI_A2 SPI Option
-
-	UCA2CTL1 |= UCSWRST;                      // **Put state machine in reset**
-	UCA2CTL0 = UCMST + UCSYNC + UCCKPL + UCMSB;     // 3-pin, 8-bit SPI master
-													// Clock polarity high, MSB
-	UCA2CTL1 = UCSSEL_2;                      // SMCLK
-	UCA2BR0 = 0x02;                           // /2
-	UCA2BR1 = 0x00;                           //
-	UCA2MCTL = 0x00;                          // No modulation
-	UCA2CTL1 &= ~UCSWRST;                   // **Initialize USCI state machine**
-
-	/*-------------------------------------------------------*/
-	DMACTL0 = DMA0TSEL_17;     		    // DMA0 - UCA2TXIFG
-	// Setup DMA0(TX)
-
-	DMA0SA = (int) TxString;                           // Source 字地址
-	DMA0DA = (int) &UCA2TXBUF;                                // 目的字地址
-
-	DMA0SZ = 3;                               // Block size
-	//DMA0CTL = DMASRCINCR_3 + DMASBDB + DMALEVEL + DMAEN;  // inc src
-	DMA0CTL = DMADT_0 + DMADSTINCR_3 + DMASBDB + DMALEVEL + DMAEN; // 重复字节传输
-//	/*-------------------------------------------------------*/
-//	DMACTL0 = DMA1TSEL_16; 				// DMA1 - UCA2RXIFG
-//	// Setup DMA1(RX)
-//
-//	__data16_write_addr((unsigned short) &DMA1SA, (unsigned long) &UCA2RXBUF);
-//	// Source block address
-//
-//	__data16_write_addr((unsigned short) &DMA1DA, (unsigned long) &RxString);
-//	// Destination single address
-//
-//	DMA1SZ = 1;                               // Block size
-//	DMA1CTL = DMADSTINCR_3 + DMASBDB + DMALEVEL;  // inc dst
-//	DMA1CTL = DMADT_0 + DMADSTINCR_3 + DMASBDB +DMALEVEL+ DMAEN; // 重复字节传输
+	UCB2CTL1 |= UCSWRST;
+	UCB2CTL0 |= UCMST + UCMSB + UCSYNC + UCCKPH; // 3-pin, 8-bit SPI master,Clock polarity high, MSB
+	UCB2CTL1 |= UCSSEL_1;                 // CLOCK ACLK
+	UCB2BR0 = 0x06;
+	UCB2BR1 = 0x00;
+	UCB2CTL1 &= ~UCSWRST;
 }
 
 //*****************************************************************************
@@ -150,13 +119,4 @@ void __attribute__ ((interrupt(WDT_VECTOR))) WDT_ISR (void)
 	DMA0CTL |= DMAEN;                         // DMA0 Enable
 }
 
-//*****************************************************************************
-//
-// UART发送
-//
-//*****************************************************************************
-inline void SPI_SendByte(uint8_t TXData) {
-	while (!(UCA2IFG & UCTXIFG))
-		;               // USCI_A2 TX buffer ready?
-	UCA2TXBUF = TXData;
-}
+

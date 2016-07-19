@@ -21,6 +21,7 @@ SOFTWARE/Usual.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myUART.h
 SOFTWARE/Usual.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h
 SOFTWARE/Usual.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h
 SOFTWARE/Usual.obj: D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h
+SOFTWARE/Usual.obj: D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/LDC1000_cmd.h
 SOFTWARE/Usual.obj: D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h
 SOFTWARE/Usual.obj: D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/I2C_IncSreen.h
 SOFTWARE/Usual.obj: C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include/cstdarg
@@ -61,6 +62,7 @@ D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myUART.h:
 D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/myTimer.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/System.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/SOFTWARE/KeyBroad.h: 
+D:/Documents/workspace/TIM4/msp430f5438A/HARDWARE/LDC1000_cmd.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/OLED/I2C_OLED.h: 
 D:/Documents/workspace/TIM4/msp430f5438A/INCSCREEN/I2C_IncSreen.h: 
 C:/ti/ccsv6/tools/compiler/ti-cgt-msp430_15.12.1.LTS/include/cstdarg: 

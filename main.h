@@ -40,7 +40,6 @@ typedef u32_t u32;
 #include "myADC.h"
 #include "myKey.h"
 #include "myIIC.h"
-#include "mySPI.h"
 #include "myUART.h"
 #include "myTimer.h"
 
@@ -50,6 +49,7 @@ typedef u32_t u32;
 #include "Usual.h"
 
 /*User Hardware-------------------------------------------------------*/
+#include "LDC1000_cmd.h"
 #include "I2C_OLED.h"
 #include "I2C_IncSreen.h"
 
