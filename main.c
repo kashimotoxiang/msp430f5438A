@@ -40,9 +40,7 @@ int main(void) {
 
 	//初始化电子墨水屏
 	IncS_Init();
-	DIS_IMG(PIC_WHITE);
-	DIS_IMG(PIC_WHITE);
-	EPD_init_Part();
+
 	//DMA方式初始化ADC
 	ADC_Init(DMACLOSE);
 
@@ -52,11 +50,11 @@ int main(void) {
 	//UART初始化
 	UART_Init();
 
-//	//LDC1000初始化
-//	while (LDC1000.freq == 0 || LDC1000.prox == 0) {
-//		LDC1000_INIT();
-//		LDC1000_ValueGet(&LDC1000);
-//	}
+	//LDC1000初始化
+	while (LDC1000.freq == 0 || LDC1000.prox == 0) {
+		LDC1000_INIT();
+		LDC1000_ValueGet(&LDC1000);
+	}
 	/*-------------------------------------------------------*/
 	while (1) {
 
@@ -66,18 +64,16 @@ int main(void) {
 //
 //		OLED_Num2StrShow(ADCSingleConv, "%d", 5, 0);
 
-	//	LDC1000_ValueGet(&LDC1000);
+		LDC1000_ValueGet(&LDC1000);
 
-//		IncS_P8x16Str(5, 0, FreqStr);
-//		IncS_Num2StrShow_Double(LDC1000.freq, 5, COUNTOF(FreqStr));
-//
-//		IncS_P8x16Str(2, 0, ProxStr);
-//		IncS_Num2StrShow_Double(LDC1000.prox, 2, COUNTOF(ProxStr));
-//
-//		IncS_Updata();
+		IncS_P8x16Str(5, 0, FreqStr);
+		IncS_Num2StrShow_Double(LDC1000.freq, 5, COUNTOF(FreqStr));
 
-		EPD_Dis_Part(0, 60,0xF9,0);
-		//part_display(2, 0,2,120);
+		IncS_P8x16Str(2, 0, ProxStr);
+		IncS_Num2StrShow_Double(LDC1000.prox, 2, COUNTOF(ProxStr));
+
+		IncS_Updata();
+
 
 //		TA1CCTL0 = CCIE; //开始计时
 //		__bis_SR_register(SLEEPLIEVEL + GIE);   // Enter LPM0, enable interrupts
