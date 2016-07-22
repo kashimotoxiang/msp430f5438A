@@ -19,7 +19,7 @@
 #define ADC_PIN   (BIT0)
 /*-------------------------------------------------------*/
 #define mSelect_Potentiometer_Ad (Potentiometer_Ad_SEL |= Potentiometer_Ad_IO) 
-#define mSetIn_Potentiometer_Ad (Potentiometer_Ad_DIR &= (~Potentiometer_Ad_IO))  
+#define mSetIn_Potentiometer_Ad  (Potentiometer_Ad_DIR &= (~Potentiometer_Ad_IO))
 
 //*****************************************************************************
 //

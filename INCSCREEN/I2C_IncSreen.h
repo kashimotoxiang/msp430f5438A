@@ -66,6 +66,8 @@ void IncS_WriteData(unsigned char INIT_DATA);
 void IncS_Set_Pos(u8 x, u8 y);
 void IncS_P6x8Str(u8 x, u8 y, u8 ch[]);
 void IncS_P8x16Str(u8 x, u8 y, u8 ch[]);
+void IncS_P24x32Str(u8 x, u8 y, u8 ch[]);
+void IncS_P32x48Str(u8 x, u8 y, u8 ch[]);
 void IncS_P16x16Ch(u8 x, u8 y, u8 num);
 void DIS_IMG(unsigned char num);
 //void IMAGE_WRITE(unsigned char patt_num);

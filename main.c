@@ -55,6 +55,10 @@ int main(void) {
 		LDC1000_INIT();
 		LDC1000_ValueGet(&LDC1000);
 	}
+
+	//主要信息显示
+	IncS_P8x16Str(5, 0, FreqStr);
+	IncS_P8x16Str(2, 0, ProxStr);
 	/*-------------------------------------------------------*/
 	while (1) {
 
@@ -66,14 +70,12 @@ int main(void) {
 
 		LDC1000_ValueGet(&LDC1000);
 
-		IncS_P8x16Str(5, 0, FreqStr);
+		//显示频率和prox
 		IncS_Num2StrShow_Double(LDC1000.freq, 5, COUNTOF(FreqStr));
-
-		IncS_P8x16Str(2, 0, ProxStr);
 		IncS_Num2StrShow_Double(LDC1000.prox, 2, COUNTOF(ProxStr));
 
+		//更新屏幕
 		IncS_Updata();
-
 
 //		TA1CCTL0 = CCIE; //开始计时
 //		__bis_SR_register(SLEEPLIEVEL + GIE);   // Enter LPM0, enable interrupts
