@@ -39,14 +39,29 @@ void IncS_Updata() {
 
 //*****************************************************************************
 //
+// WaiteWrite
+//
+//*****************************************************************************
+void IncS_Updata_Quick() {
+//	READBUSY();
+	IncS_Write_Com(0x22);
+	IncS_Write_Data(0xC7); // (Enable Clock Signal, Enable CP) (Display update,Disable CP,Disable Clock Signal)
+	//  IncS_Write_Data(0xF7);    // (Enable Clock Signal, Enable CP, Load Temperature value, Load LUT) (Display update,Disable CP,Disable Clock Signal)
+	IncS_Write_Com(0x20);
+	//delayms(1);
+}
+
+
+//*****************************************************************************
+//
 // READBUSY
 //
 //*****************************************************************************
 void READBUSY() {
 	/*-------------------------------------------------------*/
-	int in = P2IN, result = 0;
+	int in = IncS_IN, result = 0;
 	while (1) {	 //=1 BUSY
-		result = BIT_4 & P2IN;
+		result = IncS_BUSY_IN_BIT & IncS_IN;
 		if (result == 0)
 			break;
 	}
@@ -61,9 +76,12 @@ void READBUSY() {
 //*****************************************************************************
 void IncS_Init() {
 	/*Pin Init-------------------------------------------------------*/
-	IncS_DIR |= IncS_SDA | IncS_SCL | IncS_CS | IncS_DC | IncS_RST;
+	IncS_DIR |= IncS_SDA | IncS_SCL | IncS_CS | IncS_DC | IncS_RST|IncS_BSI;
 	IncS_DIR &= ~IncS_BUSY_IN;
+	IncS_REN|=IncS_BUSY_IN;
 	/*Reset-------------------------------------------------------*/
+	IncS_BSI_L;
+
 	IncS_nRST_L;
 	delayms(10); //1ms
 	IncS_nRST_H;
@@ -164,11 +182,10 @@ void IncS_Write_Com(unsigned char INIT_COM) {
 // IncS_Write_Data
 //
 //*****************************************************************************
-void IncS_Write_Data(unsigned char INIT_DATA) {
-	unsigned char TEMPCOM;
-	unsigned char scnt;
+inline void IncS_Write_Data(unsigned char INIT_DATA) {
+	static unsigned char TEMPCOM;
+	static unsigned char scnt;
 	TEMPCOM = INIT_DATA;
-	IncS_nCS_H;
 	IncS_nCS_L;
 	IncS_SCLK_L;
 	IncS_nDC_H;

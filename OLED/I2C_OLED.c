@@ -122,18 +122,18 @@ void Single_Write_OLED(u8 REG_Address, u8 REG_data) {
 	I2C_SendByte_OLED(REG_data);
 	I2C_Stop_OLED();                   //发送停止信号
 }
-void OLED_WRITE_COM(u8 com)				//写指令
+inline void OLED_WRITE_COM(u8 com)				//写指令
 {
 	Single_Write_OLED(0x00, com);
 }
 
-void OLED_WRITE_DATA(u8 data)				//写数据
+inline void OLED_WRITE_DATA(u8 data)				//写数据
 {
 	Single_Write_OLED(0x40, data);
 }
 
 /*********************OLED 设置坐标************************************/
-void OLED_Set_Pos(u8 x, u8 y) //设置OLED坐标
+inline void OLED_Set_Pos(u8 x, u8 y) //设置OLED坐标
 {
 	OLED_WRITE_COM(0xb0 + y);
 	OLED_WRITE_COM(((x & 0xf0) >> 4) | 0x10);
@@ -252,8 +252,11 @@ void OLED_P6x8Str(u8 x, u8 y, u8 ch[]) {
 	}
 }
 /*******************功能描述：显示8*16一组标准ASCII字符串	 显示的坐标（x,y），y为页范围0～7****************/
-void OLED_P8x16Str(u8 x, u8 y, u8 ch[]) {
-	u8 c = 0, i = 0, j = 0;
+inline void OLED_P8x16Str(u8 x, u8 y, u8 ch[]) {
+	static u8 c = 0, i = 0, j = 0;
+	c = 0;
+	i = 0;
+	j = 0;
 	while (ch[j] != '\0') {
 		c = ch[j] - 32;
 		if (x > 120) {

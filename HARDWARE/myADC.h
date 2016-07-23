@@ -29,8 +29,9 @@
 /*单次ADC-------------------------------------------------------*/
 void ADCs_Init(void);
 double ADCs_Get(void) ;
+
 /*连续ADC-------------------------------------------------------*/
-void ADCc_Init(u8 DMAInitFlag);
+void ADC_Init(u8 DMAInitFlag);
 void ADC_Disable(void);
 void Open_ADC12_A(void);
 void Close_ADC12_A(void);

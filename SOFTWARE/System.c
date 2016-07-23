@@ -8,40 +8,47 @@
 static void SetVCoreUp(unsigned int level);
 //*****************************************************************************
 //
-// ÏµÍ³³õÊ¼»¯
+// ç³»ç»Ÿåˆå§‹åŒ–
 //
 //*****************************************************************************
 void System_Init(void) {
-	P4DIR &= ~BIT0;  //care ÉÏµçºó£¬Ò»¶¨ÒªÉèÎªÊäÈë,²»È»£¬ÓĞ¿ÉÄÜ»áµçÔ´¶ÌÂ·
+	P4DIR &= ~BIT0;  //care ä¸Šç”µåï¼Œä¸€å®šè¦è®¾ä¸ºè¾“å…¥,ä¸ç„¶ï¼Œæœ‰å¯èƒ½ä¼šç”µæºçŸ­è·¯
 	WDTCTL = WDTPW + WDTHOLD;                 // Stop watchdog timer
-	Osccon_Initial(); //¾§Õñ³õÊ¼»¯º¯Êı:¶¨ÒåÏà¹Ø¾§Õñ²ÎÊı
+	Osccon_Initial(); //æ™¶æŒ¯åˆå§‹åŒ–å‡½æ•°:å®šä¹‰ç›¸å…³æ™¶æŒ¯å‚æ•°
 
 	//  Init_Timer0_B();
 }
 //*****************************************************************************
 //
-// Ê±ÖÓ³õÊ¼»¯
+// æ—¶é’Ÿåˆå§‹åŒ–
 //
 //*****************************************************************************
 void Osccon_Initial(void) {
-	SetVCoreUp(1);
-	SetVCoreUp(2);
-	SetVCoreUp(3);
+	SetVCoreUp(PMMCOREV_3); // Set Vcore to accomodate for max. allowed system speed
 
-	//	//UCS SETTING
-	UCSCTL3 |= SELREF__REFOCLK;
+	UCSCTL3 |= SELREF_2;					  // Set DCO FLL reference = REFO
 
-	__bis_SR_register(SCG0);                  // Disable the FLL control loop
-	UCSCTL0 = 0x0000;                         // Set lowest possible DCOx, MODx
-	UCSCTL1 = DCORSEL_6;                     // Select DCO range 24MHz operation
-	UCSCTL2 = FLLD_0 + 731;                   // Set DCO Multiplier for 24MHz
-											  // (N + 1) * FLLRef = Fdco
-											  // (731 + 1) * 32768 = 24MHz
-											  // Set FLL Div = fDCOCLK/2
-	__bic_SR_register(SCG0);                  // Enable the FLL control loop
-	UCSCTL4 |= SELA__DCOCLK + SELS__XT1CLK + SELM__DCOCLK; //ACLK,SMCLK,MCLK Source select
-	UCSCTL5 |= DIVPA_2;                                   //ACLK output divide
-	UCSCTL6 |= XT1DRIVE_3 + XCAP_0;                       //XT1 cap
+	__bis_SR_register(SCG0);				  // Disable the FLL control loop
+	UCSCTL0 = 0x0000;						  // Set lowest possible DCOx, MODx
+	UCSCTL1 = DCORSEL_7;					 // Select DCO range 24MHz operation
+	UCSCTL2 = FLLD_1 + 374; 				  // Set DCO Multiplier for 12MHz
+	__bic_SR_register(SCG0);				  // Enable the FLL control loop
+	P5SEL |= BIT2 + BIT3;					   // Port select XT2
+
+	UCSCTL6 &= ~XT2OFF;					   // Enable XT2
+
+	UCSCTL6 &= ~(XT1OFF);					   // XT1 On
+	UCSCTL6 |= XCAP_3; 					   // Internal load cap
+
+	UCSCTL4 &= ~SELS_5;
+	UCSCTL4 |= SELS_4;	 //SMCLKÑ¡ï¿½ï¿½DCOCLKDIV (ï¿½ï¿½Æµï¿½ï¿½ï¿½Æµï¿½ï¿½)
+
+	UCSCTL7 &= ~(XT2OFFG + XT1LFOFFG + XT1HFOFFG + DCOFFG);
+	// Clear XT2,XT1,DCO fault flags
+	SFRIFG1 &= ~OFIFG;					  // Clear fault flags
+
+	delayms(800);
+	UCSCTL6 &= ~XT2DRIVE0;// Decrease XT2 Drive according to  expected frequency
 
 }
 

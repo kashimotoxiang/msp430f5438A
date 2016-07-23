@@ -56,7 +56,8 @@ inline void OLED_Num2StrShow_Int(int data, u16 x, u16 y) {
 }
 
 inline void OLED_Num2StrShow_Double(double data, u16 x, u16 y) {
-	F2S(data, TemptString);
+	sprintf(TemptString, "%f", data);
+	TemptString[9]='\0';
 	OLED_P8x16Str(x * 8, y * 16, TemptString);
 }
 //*****************************************************************************
@@ -70,7 +71,9 @@ inline void IncS_Num2StrShow_Int(int data, u16 x, u16 y) {
 }
 
 inline void IncS_Num2StrShow_Double(double data, u16 x, u16 y) {
-	F2S(data, TemptString);
+	//F2S(data, TemptString);
+	sprintf(TemptString, "%f", data);
+	TemptString[9]='\0';
 	IncS_P24x32Str(x, y * 24, TemptString);
 
 }
@@ -80,4 +83,4 @@ inline void IncS_Num2StrShow_Double(double data, u16 x, u16 y) {
 // declartion
 //
 //*****************************************************************************
-void F2S(double d, char* str);
+void F2S(double d, char* str) ;

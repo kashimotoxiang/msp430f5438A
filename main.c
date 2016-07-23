@@ -24,6 +24,7 @@ struct LDC1000DATA_Struct LDC1000 = { 0, 0, 0, 0, 0, 0 };
 
 int main(void) {
 	double ADCSingleConv = 0;
+	int i = 0;
 	char ADCSingleConvStr[10] = { 0 };
 	/*-------------------------------------------------------*/
 	//系统初始化
@@ -36,7 +37,8 @@ int main(void) {
 	KeyBroadInit();
 
 	//初始化OLED显示模块
-	I2C_OLED_Init();
+	for (i = 0; i < 5; i++)
+		I2C_OLED_Init();
 
 	//初始化电子墨水屏
 	IncS_Init();
@@ -77,11 +79,11 @@ int main(void) {
 		//LDC1000_ValueGet(&LDC1000);
 
 		//显示频率和prox
-		IncS_Num2StrShow_Double(LDC1000.freq, 11, 0);	//COUNTOF(FreqStr)
+		IncS_Num2StrShow_Double(ADCSingleConv, 11, 0);	//COUNTOF(FreqStr)
 		IncS_Num2StrShow_Double(LDC1000.prox, 3, 0);	//COUNTOF(ProxStr)
 
 		//更新屏幕
-		IncS_Updata();
+		IncS_Updata_Quick();
 
 //		TA1CCTL0 = CCIE; //开始计时
 //		__bis_SR_register(SLEEPLIEVEL + GIE);   // Enter LPM0, enable interrupts

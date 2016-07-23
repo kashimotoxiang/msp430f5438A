@@ -13,16 +13,21 @@
 
 #define IncS_SEL    		P2SEL
 #define IncS_DIR       	    P2DIR
+#define IncS_REN       	    P2REN
 #define IncS_OUT       	    P2OUT
 #define IncS_IN       	    P2IN
 
-#define IncS_SDA    		BIT0
-#define IncS_SCL       	    BIT1
+#define IncS_BUSY_IN       	BIT0
+#define IncS_BUSY_IN_BIT    BIT_0
+#define IncS_DC    			BIT1
 #define IncS_CS      	    BIT2
-#define IncS_DC    			BIT3
-#define IncS_BUSY_IN       	BIT4
-#define IncS_BUSY_IN_BIT    BIT_4
-#define IncS_RST       	    BIT5
+#define IncS_SCL       	    BIT3
+#define IncS_BSI       	    BIT4
+#define IncS_SDA    		BIT5
+#define IncS_RST       	    BIT6
+
+#define IncS_BSI_H  IncS_OUT|=IncS_BSI
+#define IncS_BSI_L  IncS_OUT&=~IncS_BSI
 
 #define IncS_SDA_H  IncS_OUT|=IncS_SDA
 #define IncS_SDA_L  IncS_OUT&=~IncS_SDA	  
@@ -57,6 +62,7 @@
 //
 //*****************************************************************************
 void IncS_Updata();
+void IncS_Updata_Quick();
 void EPD_W21_Update_Part(void);
 void READBUSY(void);
 void IncS_Init(void);

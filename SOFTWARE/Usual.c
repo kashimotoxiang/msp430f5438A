@@ -19,7 +19,7 @@ void Bubble_Sort(uint8_t volatile* num, int n) {
 }
 //---------------------------------------------------------------------//
 void F2S(double d, char* str) {
-	char str1[40];
+	char str1[20];
 	int j = 0, k, i;
 	i = (int) d;  //浮点数的整数部分
 	//d = d-(int)d;
@@ -46,5 +46,6 @@ void F2S(double d, char* str) {
 	while (str[--j] == '0')
 		;
 	str[++j] = '\0';
+	str[10] = '\0';
 	return str;
 }
