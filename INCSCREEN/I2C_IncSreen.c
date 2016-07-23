@@ -62,7 +62,7 @@ void READBUSY() {
 void IncS_Init() {
 	/*Pin Init-------------------------------------------------------*/
 	IncS_DIR |= IncS_SDA | IncS_SCL | IncS_CS | IncS_DC | IncS_RST;
-
+	IncS_DIR &= ~IncS_BUSY_IN;
 	/*Reset-------------------------------------------------------*/
 	IncS_nRST_L;
 	delayms(10); //1ms
@@ -219,24 +219,21 @@ void IncS_P6x8Str(u8 x, u8 y, u8 ch[]) {
 }
 /*******************功能描述：显示8*16一组标准ASCII字符串	 显示的坐标（x,y），y为页范围0～7****************/
 void IncS_P8x16Str(u8 x, u8 y, u8 ch[]) {
-	u8 c = 0, i = 0, j = 0;
+	u8 c = 0, i = 0, j = 0, n = 0, m = 0;
 	//x=120-x;
 	while (ch[j] != '\0') {
 		c = ch[j] - 32;
 		if (x > 120) {
-			x = 0;
+			x = 4;
 			y++;
 		}					//边界限制  强制拉回
 
-		for (i = 0; i < 8; i++) {					//下半部分
-			IncS_Set_Pos(x, y + i);
-			IncS_Write_Data(F8X16[c * 16 + i + 8]);
+		for (m = 0; m < 2; m++) {			//行方向需要分成3段显示
+			for (n = 0; n < 8; n++) {				//32行
+				IncS_Set_Pos(x - m, y + n);
+				IncS_Write_Data(F8X16[c * 16 + m * 8 + n]);
+			}
 		}
-		for (i = 0; i < 8; i++) {					//上半部分
-			IncS_Set_Pos(x + 1, y + i);
-			IncS_Write_Data(F8X16[c * 16 + i]);
-		}
-
 		y += 8;
 		j++;
 	}
@@ -258,19 +255,19 @@ void IncS_P16x16Ch(u8 x, u8 y, u8 num) {
 }
 /*******************功能描述：显示24*32一组标准ASCII字符串	 显示的坐标（x,y），y为页范围0～7****************/
 void IncS_P24x32Str(u8 x, u8 y, u8 ch[]) {
-	u8 c = 0, i = 0, j = 0,n=0,m=0;
+	u8 c = 0, i = 0, j = 0, n = 0, m = 0;
 	//x=120-x;
 	while (ch[j] != '\0') {
 		c = ch[j] - 32;
-		x += 4;					//列方向需要分成4段显示
 		if (x > 120) {
 			x = 4;
 			y++;
-		}					//边界限制  强制拉回
-		for (n = 0; n < 32; n++) {				//32行
-			for (m = 0; m < 3; m++) {			//行方向需要分成3段显示
-				IncS_Set_Pos(x - n / 8, y + m);
-				IncS_Write_Data(F24x32[c * 96 + m + n * 3]);
+		}
+		for (m = 0; m < 4; m++) {			//行方向需要分成3段显示
+			for (n = 0; n < 24; n++) {				//32行
+				IncS_Set_Pos(x - m, y + n);
+				IncS_Write_Data(F24x32[c][m * 24 + n]);
+
 			}
 		}
 		y += 24;			//进入下一个字节，行防线地址增
@@ -279,25 +276,25 @@ void IncS_P24x32Str(u8 x, u8 y, u8 ch[]) {
 }
 /*******************功能描述：显示32*48一组标准ASCII字符串	 显示的坐标（x,y），y为页范围0～7****************/
 /*void IncS_P32x48Str(u8 x, u8 y, u8 ch[]) {
-	u8 c = 0, i = 0, j = 0,n=0,m=0;
-	//x=120-x;
-	while (ch[j] != '\0') {
-		c = ch[j] - 32;
-		x += 6;			//列方向需要分成6段显示
-		if (x > 120) {
-			x = 6;
-			y++;
-		}					//边界限制  强制拉回
-		for (n = 0; n < 48; n++) {		//48行
-			for (m = 0; m < 4; m++) {	//行方向需要分成4段显示
-				IncS_Set_Pos(x - n / 8, y + m);
-				IncS_Write_Data(F32x48[c * 192 + m + n * 4]);
-			}
-		}
-		y += 32;	//进入下一个字节，行防线地址增
-		j++;
-	}
-}*/
+ u8 c = 0, i = 0, j = 0,n=0,m=0;
+ //x=120-x;
+ while (ch[j] != '\0') {
+ c = ch[j] - 32;
+ x += 6;			//列方向需要分成6段显示
+ if (x > 120) {
+ x = 6;
+ y++;
+ }					//边界限制  强制拉回
+ for (n = 0; n < 48; n++) {		//48行
+ for (m = 0; m < 4; m++) {	//行方向需要分成4段显示
+ IncS_Set_Pos(x - n / 8, y + m);
+ IncS_Write_Data(F32x48[c * 192 + m + n * 4]);
+ }
+ }
+ y += 32;	//进入下一个字节，行防线地址增
+ j++;
+ }
+ }*/
 //*****************************************************************************
 //
 // DIS_IMG

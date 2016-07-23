@@ -66,12 +66,12 @@ inline void OLED_Num2StrShow_Double(double data, u16 x, u16 y) {
 //*****************************************************************************
 inline void IncS_Num2StrShow_Int(int data, u16 x, u16 y) {
 	sprintf(TemptString, "%d", data);
-	IncS_P8x16Str(x, y * 16, TemptString);
+	IncS_P8x16Str(x, y * 24, TemptString);
 }
 
 inline void IncS_Num2StrShow_Double(double data, u16 x, u16 y) {
 	F2S(data, TemptString);
-	IncS_P8x16Str(x, y * 16, TemptString);
+	IncS_P24x32Str(x, y * 24, TemptString);
 
 }
 

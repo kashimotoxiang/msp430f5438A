@@ -22,19 +22,23 @@
  */
 #define	SlaveAddress   0x78	  //oled ADDRESS
 
-#define PORT_OLED  	P1OUT   //总端口号
-#define DIR_OLED  	P1DIR   //端口方向
+#define PORT_OLED  	P4OUT   //总端口号
+#define DIR_OLED  	P4DIR   //端口方向
+#define IN_OLED  	P4IN   //端口方向
 
-#define SDA_Value_OLED  (P1IN & BIT7)    //读取SDA引脚的电平值，读之前端口方向设为输入!!!!!!
+#define OLED_SCK_PIN BIT1
+#define OLED_SDA_PIN BIT0
 
-#define SCK_I2C_OUT_OLED DIR_OLED  |=BIT6
-#define SCK_I2C_H_OLED	 PORT_OLED  |= BIT6   // SCK
-#define SCK_I2C_L_OLED	 PORT_OLED  &= ~BIT6
+#define SDA_Value_OLED  (IN_OLED & OLED_SDA_PIN)    //读取SDA引脚的电平值，读之前端口方向设为输入!!!!!!
 
-#define SDA_DIR_OUT_OLED	DIR_OLED  |= BIT7     //数据端口方向设为输出   SDA
-#define SDA_DIR_IN_OLED	    DIR_OLED  &= ~BIT7    //数据端口方向设为输入
-#define SDA_I2C_H_OLED	    PORT_OLED  |= BIT7
-#define SDA_I2C_L_OLED  	PORT_OLED  &= ~BIT7
+#define SCK_I2C_OUT_OLED DIR_OLED  |=OLED_SCK_PIN
+#define SCK_I2C_H_OLED	 PORT_OLED  |= OLED_SCK_PIN   // SCK
+#define SCK_I2C_L_OLED	 PORT_OLED  &= ~OLED_SCK_PIN
+
+#define SDA_DIR_OUT_OLED	DIR_OLED  |= OLED_SDA_PIN     //数据端口方向设为输出   SDA
+#define SDA_DIR_IN_OLED	    DIR_OLED  &= ~OLED_SDA_PIN    //数据端口方向设为输入
+#define SDA_I2C_H_OLED	    PORT_OLED  |= OLED_SDA_PIN
+#define SDA_I2C_L_OLED  	PORT_OLED  &= ~OLED_SDA_PIN
 
 #define delay_us(x) __delay_cycles((long)(CPU_F*(double)x/1000000.0))
 #define delay_ms(x) __delay_cycles((long)(CPU_F*(double)x/1000.0))

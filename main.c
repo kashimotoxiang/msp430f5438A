@@ -15,7 +15,7 @@ ADCDataType g_ADCConvBuf[ADC_CONVBUF_SIZE];
 int g_KeyValue;
 unsigned char FreqStr[] = "Freq:";
 unsigned char ProxStr[] = "Prox:";
-struct LDC1000DATA_Struct LDC1000 = { 0 };
+struct LDC1000DATA_Struct LDC1000 = { 0, 0, 0, 0, 0, 0 };
 //*****************************************************************************
 //
 // main
@@ -51,28 +51,34 @@ int main(void) {
 	UART_Init();
 
 	//LDC1000初始化
-	while (LDC1000.freq == 0 || LDC1000.prox == 0) {
-		LDC1000_INIT();
-		LDC1000_ValueGet(&LDC1000);
-	}
-
+	//while (LDC1000.freq == 0 || LDC1000.prox == 0) {
+	//	LDC1000_INIT();
+	//	LDC1000_ValueGet(&LDC1000);
+	//}
+	DIS_IMG(PIC_WHITE);
 	//主要信息显示
-	IncS_P8x16Str(5, 0, FreqStr);
-	IncS_P8x16Str(2, 0, ProxStr);
+	IncS_P24x32Str(15, 0, FreqStr);
+	IncS_P24x32Str(7, 0, ProxStr);
+	//更新屏幕
+	IncS_Updata();
+	IncS_P24x32Str(15, 0, FreqStr);
+	IncS_P24x32Str(7, 0, ProxStr);
+	//更新屏幕
+	IncS_Updata();
 	/*-------------------------------------------------------*/
 	while (1) {
 
-//		ADCSingleConv = ADCs_Get();
+		ADCSingleConv = ADCs_Get();
 //
 //		g_KeyValue=KeyBroadScan();
 //
-//		OLED_Num2StrShow(ADCSingleConv, "%d", 5, 0);
+		OLED_Num2StrShow_Int(ADCSingleConv, 5, 0);
 
-		LDC1000_ValueGet(&LDC1000);
+		//LDC1000_ValueGet(&LDC1000);
 
 		//显示频率和prox
-		IncS_Num2StrShow_Double(LDC1000.freq, 5, COUNTOF(FreqStr));
-		IncS_Num2StrShow_Double(LDC1000.prox, 2, COUNTOF(ProxStr));
+		IncS_Num2StrShow_Double(LDC1000.freq, 11, 0);	//COUNTOF(FreqStr)
+		IncS_Num2StrShow_Double(LDC1000.prox, 3, 0);	//COUNTOF(ProxStr)
 
 		//更新屏幕
 		IncS_Updata();

@@ -23,6 +23,8 @@ void F2S(double d, char* str) {
 	int j = 0, k, i;
 	i = (int) d;  //浮点数的整数部分
 	//d = d-(int)d;
+	if (i == 0)
+		str1[j++] = '0';
 	while (i > 0) {
 		str1[j++] = i % 10 + '0';
 		i /= 10;
@@ -31,6 +33,11 @@ void F2S(double d, char* str) {
 		str[k] = str1[j - 1 - k]; //
 	str[j++] = '.';
 	d -= (int) d;
+	if (d < 0.00000000000000000001){
+		str[j++] = '0';
+		str[j++] = '\0';
+		return str;
+	}
 	for (i = 0; i < 10; i++) {
 		d *= 10;
 		str[j++] = (int) d + '0';

@@ -90,6 +90,15 @@ void LDC1000_ValueGet(struct LDC1000DATA_Struct *m_pLDCs) {
 		if (m_freq > m_freqMAX)
 			m_freqMAX = m_freq;
 	}
+	/*抛弃本次采集-------------------------------------------------------*/
+	if (avrnum < 50) {
+		m_pLDCs->freq = 0;
+		m_pLDCs->prox = 0;
+		m_pLDCs->proxMIN = 0;
+		m_pLDCs->freqMIN = 0;
+		m_pLDCs->proxMAX = 0;
+		m_pLDCs->freqMAX = 0;
+	}
 	/*Result-------------------------------------------------------*/
 	m_pLDCs->freq = freqSum / (double) avrnum;
 	m_pLDCs->prox = proxSum / (double) avrnum;
